@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BinaSehat</string>
+    <string name="onboarding_desc1">Mulai perjalanan kebugaranmu! Dengan aplikasi ini, kamu bisa mengikuti latihan yang disesuaikan dengan kebutuhan dan targetmu. Tetap semangat dan raih tubuh sehat yang selalu kamu impikan.</string>
+    <string name="onboarding_desc2">Ketahui nutrisi di balik makanan yang kamu konsumsi. Cukup scan, dan aplikasi ini akan memberikan informasi gizi lengkap untuk membantu kamu membuat pilihan yang lebih sehat setiap hari.</string>
+    <string name="onboarding_desc3">Lacak perkembangan latihan dan pola makanmu dengan mudah. Semua data kebugaran dan nutrisi tersimpan di satu tempat, membuatmu lebih dekat dengan gaya hidup sehat yang seimbang.</string>
+    <string name="next">Selanjutnya</string>
+    <string name="skip">Lewati</string>
+    <string name="login">Login</string>
+    <string name="daftar">Daftar</string>
+    <string name="form">Formulir</string>
+</resources>
