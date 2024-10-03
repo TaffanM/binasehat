@@ -8,4 +8,5 @@
     <string name="login">Login</string>
     <string name="daftar">Daftar</string>
     <string name="form">Formulir</string>
+    <string name="kirim">Kirim</string>
 </resources>
