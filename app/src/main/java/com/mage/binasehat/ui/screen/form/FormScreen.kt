@@ -59,6 +59,7 @@ import com.mage.binasehat.R
 import com.mage.binasehat.ui.screen.components.BackButton
 import com.mage.binasehat.ui.screen.components.CustomFillButton
 import com.mage.binasehat.ui.screen.components.LoadingDialog
+import com.mage.binasehat.ui.screen.components.SuccessDialog
 import com.mage.binasehat.ui.theme.BinaSehatTheme
 import com.mage.binasehat.ui.theme.PlusJakartaSans
 import com.mage.binasehat.ui.theme.Typography
@@ -73,7 +74,8 @@ import java.util.Locale
 fun FormScreen(
     navController: NavHostController
 ) {
-    var showDialog by remember { mutableStateOf(false) }
+    var showLoadingDialog by remember { mutableStateOf(false) }
+    var showSuccessDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -103,30 +105,39 @@ fun FormScreen(
             CustomFillButton(
                 text = stringResource(R.string.kirim),
                 onClick = {
-                   showDialog = true
+                   showLoadingDialog = true
                 }
             )
         }
 
-        if (showDialog) {
+        if (showLoadingDialog) {
             LoadingDialog(
                 onDismiss = {
-                    showDialog = false
+                    showLoadingDialog = false
                 }
+            )
+        }
+
+        if (showSuccessDialog) {
+            SuccessDialog(
+                onDismiss = {
+                    showSuccessDialog = false
+                    navController.navigate("login") {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                    }
+                },
+                text = stringResource(R.string.sukses_daftar)
             )
         }
     }
 
-    LaunchedEffect(showDialog) {
-        if (showDialog) {
+    LaunchedEffect(showLoadingDialog) {
+        if (showLoadingDialog) {
             delay(5000)
-            withContext(Dispatchers.Main) {
-                navController.navigate("login") {
-                    popUpTo(navController.graph.startDestinationId) {
-                        inclusive = true
-                    }
-                }
-            }
+            showLoadingDialog = false
+            showSuccessDialog = true
 
         }
     }

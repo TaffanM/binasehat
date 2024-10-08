@@ -97,8 +97,15 @@ fun LoginScreen(
                 keyboardType = KeyboardType.Password
             )
             CustomOutlinedButton(
-                "Masuk"
-            ) { }
+                "Masuk",
+                onClick = {
+                    navController.navigate("main") {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
             OrDivider()
             CustomFillButton(
                 "Daftar",

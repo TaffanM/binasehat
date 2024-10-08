@@ -9,4 +9,9 @@
     <string name="daftar">Daftar</string>
     <string name="form">Formulir</string>
     <string name="kirim">Kirim</string>
+    <string name="sukses_daftar">Pendaftaran Berhasil</string>
+    <string name="beranda">Beranda</string>
+    <string name="makanan">Makanan</string>
+    <string name="olahraga">Olahraga</string>
+    <string name="profil">Profil</string>
 </resources>
