@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -43,7 +44,7 @@ fun SuccessDialog(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(300.dp)
-                .background(Color.White, shape = RoundedCornerShape(8.dp))
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,7 +60,7 @@ fun SuccessDialog(
                 Spacer(modifier = Modifier.height(16.dp)) // Add some space between animation and button
                 Text(
                     text = text,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = Typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp)) // Add some space between text and button

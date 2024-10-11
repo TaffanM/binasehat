@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +34,7 @@ fun LoadingDialog(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(200.dp)
-                .background(Color.White, shape = RoundedCornerShape(8.dp))
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,7 +45,7 @@ fun LoadingDialog(
                 )
                 Text(
                     text = "Memuat...",
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = Typography.bodyMedium,
                     modifier = Modifier.padding(top = 32.dp)
                 )

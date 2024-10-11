@@ -37,7 +37,6 @@ fun BackButton(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
-            contentColor = Color.Black
         ),
         shape = RoundedCornerShape(10.dp),
         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)

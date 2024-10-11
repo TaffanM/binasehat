@@ -14,4 +14,14 @@
     <string name="makanan">Makanan</string>
     <string name="olahraga">Olahraga</string>
     <string name="profil">Profil</string>
+    <string name="karbohidrat">Karbohidrat</string>
+    <string name="protein">Protein</string>
+    <string name="lemak">Lemak</string>
+    <string name="gula">Gula</string>
+    <string name="asupan_makanan">Asupan Makanan</string>
+    <string name="makananmu_hari_ini">Makananmu Hari Ini</string>
+    <string name="tambah_makanan">Tambah Makanan</string>
+    <string name="selanjutnya">Selanjutnya</string>
+    <string name="tinggi_anda">Tinggi Anda</string>
+    <string name="berat_anda">Berat Anda</string>
 </resources>

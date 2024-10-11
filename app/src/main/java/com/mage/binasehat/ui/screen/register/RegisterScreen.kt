@@ -57,7 +57,6 @@ fun RegisterScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.white_bg))
     ) {
         Column(
             modifier = Modifier
@@ -161,8 +160,7 @@ fun RegisterTitleText() {
             text = stringResource(R.string.daftar),
             fontSize = 24.sp,
             fontFamily = PlusJakartaSans,
-            fontWeight = FontWeight.Bold,
-            color = colorResource(R.color.black)
+            fontWeight = FontWeight.Bold
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),

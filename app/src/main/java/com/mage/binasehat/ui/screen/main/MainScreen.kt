@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mage.binasehat.ui.screen.components.BottomBar
 import com.mage.binasehat.ui.screen.dashboard.DashboardScreen
+import com.mage.binasehat.ui.screen.food.FoodScreen
 
 @Composable
 fun MainScreenWithBottomBar(
@@ -34,7 +35,7 @@ fun MainScreenWithBottomBar(
             modifier = Modifier.padding(paddingValues)
         ) {
             composable("home") { DashboardScreen() }
-            composable("food") { /* FoodScreen() */ }
+            composable("food") { FoodScreen() }
             composable("exercise") { /* ExerciseScreen() */ }
             composable("profile") { /* ProfileScreen() */ }
         }

@@ -21,12 +21,6 @@ class MainActivity : ComponentActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-
-        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
-
-
-        windowInsetsController.isAppearanceLightStatusBars = true
-
         setContent {
             BinaSehatTheme {
                 Surface(

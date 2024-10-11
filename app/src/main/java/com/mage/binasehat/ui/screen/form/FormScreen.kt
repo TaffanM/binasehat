@@ -1,11 +1,15 @@
 package com.mage.binasehat.ui.screen.form
 
+import android.app.LauncherActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,32 +18,43 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -55,16 +70,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.tv.material3.MaterialTheme
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mage.binasehat.R
 import com.mage.binasehat.ui.screen.components.BackButton
 import com.mage.binasehat.ui.screen.components.CustomFillButton
+import com.mage.binasehat.ui.screen.components.CustomOutlinedButton
+import com.mage.binasehat.ui.screen.components.HeightPicker
 import com.mage.binasehat.ui.screen.components.LoadingDialog
 import com.mage.binasehat.ui.screen.components.SuccessDialog
+import com.mage.binasehat.ui.screen.components.WeightPicker
 import com.mage.binasehat.ui.theme.BinaSehatTheme
 import com.mage.binasehat.ui.theme.PlusJakartaSans
 import com.mage.binasehat.ui.theme.Typography
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -80,7 +100,6 @@ fun FormScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.white_bg))
     ) {
         Column(
             modifier = Modifier
@@ -157,12 +176,10 @@ fun FormTitleText() {
             fontSize = 24.sp,
             fontFamily = PlusJakartaSans,
             fontWeight = FontWeight.Bold,
-            color = colorResource(R.color.black)
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = "Harap isi informasi anda. Hal ini membantu kami menyesuaikan pengalaman anda menggunakan BinaSehat dan memastikan kami memiliki detail yang paling akurat",
-            color = colorResource(R.color.gray_300),
             style = Typography.bodyMedium,
             textAlign = TextAlign.Start
         )
@@ -186,7 +203,6 @@ fun BirthEditText() {
     ) {
         Text(
             text = "Tanggal Lahir",
-            color = colorResource(R.color.black),
             style = Typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -282,7 +298,6 @@ fun GenderOption() {
     ) {
         Text(
             text = "Jenis Kelamin",
-            color = colorResource(R.color.black),
             style = Typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -371,10 +386,29 @@ fun GenderButton(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BodyStats() {
-    var height by remember { mutableStateOf("") }
-    var weight by remember { mutableStateOf("") }
+    var height by remember { mutableStateOf<Int?>(null) }
+    var weight by remember { mutableStateOf<Int?>(null) }
+
+    var showHeightPicker by remember { mutableStateOf(false) }
+    var showWeightPicker by remember { mutableStateOf(false) }
+    var tempHeight by remember { mutableIntStateOf(175) }
+    var tempWeight by remember { mutableIntStateOf(60) }
+
+    LaunchedEffect(showHeightPicker) {
+        if (!showHeightPicker) {
+            tempHeight = height ?: 175
+        }
+    }
+
+    LaunchedEffect(showWeightPicker) {
+        if (!showWeightPicker) {
+            tempWeight = weight ?: 60
+        }
+    }
+
 
     Column(
         modifier = Modifier
@@ -383,7 +417,6 @@ fun BodyStats() {
     ) {
         Text(
             text = "Statistik Badan",
-            color = Color.Black,
             style = Typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -392,52 +425,102 @@ fun BodyStats() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             HealthForm(
-                onValueChange = { newValue ->
-                    // Allow only integers and restrict to three digits
-                    if ((newValue.all { it.isDigit() } || newValue.isEmpty()) && newValue.length <= 3) {
-                        height = newValue // Update height
-                    }
-                },
-                input = height,
+                onClick = { showHeightPicker = true},
+                input = height?.toString() ?: "",
                 placeholder = "Tinggi",
                 icon = painterResource(R.drawable.rounded_height_24),
                 trailingText = "cm",
-                keyboardType = KeyboardType.Number,
                 modifier = Modifier.weight(1f)
             )
             HealthForm(
-                onValueChange = { newValue ->
-                    // Allow float input for weight and restrict to three digits
-                    if ((newValue.all { it.isDigit() || it == '.' } || newValue.isEmpty()) &&
-                        (newValue.length <= 3 || (newValue.count { it == '.' } <= 1))) {
-                        weight = newValue // Update weight
-                    }
-                },
-                input = weight,
+                onClick = { showWeightPicker = true},
+                input = weight?.toString() ?: "",
                 placeholder = "Berat",
                 icon = painterResource(R.drawable.rounded_monitor_weight_24),
                 trailingText = "kg",
-                keyboardType = KeyboardType.Decimal,
                 modifier = Modifier.weight(1f)
             )
+        }
+    }
+
+    if (showHeightPicker) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showHeightPicker = false
+            },
+            containerColor = MaterialTheme.colorScheme.surface,
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp, start = 16.dp, end = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                HeightPicker(
+                    initialHeight = tempHeight,
+                    onHeightChange = { newHeight ->
+                        tempHeight = newHeight
+                    }
+                )
+
+                CustomOutlinedButton(
+                    text = "Simpan",
+                    onClick = {
+                        height = tempHeight
+                        showHeightPicker = false
+                    }
+                )
+
+            }
+        }
+    }
+
+    if (showWeightPicker) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showWeightPicker = false
+            },
+            containerColor = MaterialTheme.colorScheme.surface,
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp, start = 16.dp, end = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                WeightPicker(
+                    initialWeight = tempWeight,
+                    onWeightChange = { newWeight ->
+                        tempWeight = newWeight
+                    }
+                )
+
+                CustomOutlinedButton(
+                    text = "Simpan",
+                    onClick = {
+                        weight = tempWeight
+                        showWeightPicker = false
+                    }
+                )
+
+            }
         }
     }
 }
 
 @Composable
 fun HealthForm(
-    onValueChange: (String) -> Unit,
+    onClick: () -> Unit,
     input: String,
     placeholder: String,
     icon: Painter,
     trailingText: String,
-    keyboardType: KeyboardType,
     modifier: Modifier = Modifier
 ) {
     val onSurfaceColor = MaterialTheme.colorScheme.onSurface
 
     OutlinedTextField(
-        onValueChange = onValueChange,
+        onValueChange = { },
         value = input,
         placeholder = {
             Text(
@@ -461,12 +544,16 @@ fun HealthForm(
                 modifier = Modifier.padding(end = 4.dp)
             )
         },
-        modifier = modifier,
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .fillMaxWidth(),
         textStyle = Typography.bodyMedium.copy(color = onSurfaceColor),
+        enabled = false,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
     )
 }
+
+
 
 
 
@@ -477,4 +564,15 @@ fun FormScreenPreview() {
     BinaSehatTheme {
         FormScreen(rememberNavController())
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HeightModalPreview() {
+    HeightPicker(
+        initialHeight = 175,
+        onHeightChange = { newHeight ->
+        }
+
+    )
 }

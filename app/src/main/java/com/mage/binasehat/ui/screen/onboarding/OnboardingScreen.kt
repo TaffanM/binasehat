@@ -93,12 +93,8 @@ fun OnboardingScreen(
 
     val coroutineScope = rememberCoroutineScope()
 
-
-
-
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(color = colorResource(R.color.white_bg))
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Button(
@@ -115,8 +111,7 @@ fun OnboardingScreen(
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.Black
+                    containerColor = Color.Transparent
                 ),
                 shape = RoundedCornerShape(10.dp),
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
@@ -197,10 +192,7 @@ fun PagerScreen(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = colorResource(R.color.white_bg))
     ) {
-
-
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -220,7 +212,6 @@ fun PagerScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 text = stringResource(onBoardingPage.desc),
-                color = colorResource(R.color.gray_300),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Start
             )

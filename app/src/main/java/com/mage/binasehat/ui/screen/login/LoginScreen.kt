@@ -23,6 +23,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Devices
@@ -55,7 +56,6 @@ fun LoginScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorResource(R.color.white_bg))
     ) {
         Column(
             modifier = Modifier
@@ -97,7 +97,7 @@ fun LoginScreen(
                 keyboardType = KeyboardType.Password
             )
             CustomOutlinedButton(
-                "Masuk",
+                stringResource(R.string.login),
                 onClick = {
                     navController.navigate("main") {
                         popUpTo(navController.graph.startDestinationId) {
@@ -108,7 +108,7 @@ fun LoginScreen(
             )
             OrDivider()
             CustomFillButton(
-                "Daftar",
+                stringResource(R.string.daftar),
                 onClick = {
                     navController.navigate("register") {
                         popUpTo(navController.graph.startDestinationId) {
@@ -137,8 +137,7 @@ fun LoginTitleText() {
             text = "Login",
             fontSize = 24.sp,
             fontFamily = PlusJakartaSans,
-            fontWeight = FontWeight.Bold,
-            color = colorResource(R.color.black)
+            fontWeight = FontWeight.Bold
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),
