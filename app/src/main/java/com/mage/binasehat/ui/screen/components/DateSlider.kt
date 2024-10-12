@@ -75,7 +75,7 @@ fun DateSlider(
             modifier = Modifier
                 .clip(RoundedCornerShape(10))
                 .align(Alignment.CenterHorizontally)
-                .background(colorResource(R.color.white_200))
+                .background(MaterialTheme.colorScheme.primaryContainer)
                 .padding(horizontal = 6.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {

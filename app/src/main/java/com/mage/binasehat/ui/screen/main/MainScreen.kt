@@ -34,8 +34,8 @@ fun MainScreenWithBottomBar(
             startDestination = "home",
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable("home") { DashboardScreen() }
-            composable("food") { FoodScreen() }
+            composable("home") { DashboardScreen(navController) }
+            composable("food") { FoodScreen(navController) }
             composable("exercise") { /* ExerciseScreen() */ }
             composable("profile") { /* ProfileScreen() */ }
         }

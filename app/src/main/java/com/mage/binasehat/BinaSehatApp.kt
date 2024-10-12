@@ -11,6 +11,7 @@ import com.mage.binasehat.ui.screen.login.LoginScreen
 import com.mage.binasehat.ui.screen.main.MainScreenWithBottomBar
 import com.mage.binasehat.ui.screen.onboarding.OnboardingScreen
 import com.mage.binasehat.ui.screen.register.RegisterScreen
+import com.mage.binasehat.ui.screen.settings.SettingsScreen
 
 @Composable
 fun BinaSehatApp(
@@ -24,6 +25,7 @@ fun BinaSehatApp(
         composable("login") { LoginScreen(navController)}
         composable("register") { RegisterScreen(navController) }
         composable("form") { FormScreen(navController) }
+        composable("settings") { SettingsScreen(navController) }
         composable("main") {
             MainScreenWithBottomBar(navController = navController)
         }

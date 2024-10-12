@@ -24,4 +24,6 @@
     <string name="selanjutnya">Selanjutnya</string>
     <string name="tinggi_anda">Tinggi Anda</string>
     <string name="berat_anda">Berat Anda</string>
+    <string name="pengaturan">Pengaturan</string>
+    <string name="kembali">Kembali</string>
 </resources>

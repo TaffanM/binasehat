@@ -1,6 +1,5 @@
 package com.mage.binasehat.ui.screen.register
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,11 +15,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
@@ -67,11 +64,7 @@ fun RegisterScreen(
                 text = stringResource(R.string.login),
                 icon = painterResource(R.drawable.round_arrow_back_ios_24),
                 onClick = {
-                    navController.navigate("login") {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
-                        }
-                    }
+                    navController.popBackStack()
                 }
             )
             RegisterTitleText()
@@ -156,7 +149,7 @@ fun RegisterTitleText() {
     ) {
         Text(
             modifier = Modifier
-                .padding(bottom = 16.dp),
+                .padding(bottom = 8.dp),
             text = stringResource(R.string.daftar),
             fontSize = 24.sp,
             fontFamily = PlusJakartaSans,
@@ -165,7 +158,6 @@ fun RegisterTitleText() {
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = "Selamat datang di aplikasi BinaSehat! Kami sangat senang apabila anda bergabung. Untuk membuat akun anda, mohon isi data dibawah ini",
-            color = colorResource(R.color.gray_300),
             style = Typography.bodyMedium,
             textAlign = TextAlign.Start
         )

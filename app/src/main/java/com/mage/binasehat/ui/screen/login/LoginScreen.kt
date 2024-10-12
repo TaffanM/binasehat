@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -142,7 +143,6 @@ fun LoginTitleText() {
         Text(
             modifier = Modifier.padding(top = 8.dp),
             text = "Masukkan email dan kata sandi Anda untuk masuk ke akun anda",
-            color = colorResource(R.color.gray_300),
             style = Typography.bodyLarge
         )
     }
@@ -163,19 +163,19 @@ fun OrDivider(
             modifier = Modifier
                 .weight(1f)
                 .height(1.dp),
-            color = colorResource(R.color.gray_300).copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
         Text(
             text = "atau",
             modifier = Modifier.padding(horizontal = 16.dp),
-            color = colorResource(R.color.gray_300),
+            color = MaterialTheme.colorScheme.onSurface,
             style = Typography.bodyMedium
         )
         HorizontalDivider(
             modifier = Modifier
                 .weight(1f)
                 .height(1.dp),
-            color = colorResource(R.color.gray_300).copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
     }
 }

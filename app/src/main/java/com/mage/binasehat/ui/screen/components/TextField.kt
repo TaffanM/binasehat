@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -37,7 +38,7 @@ fun TextField(
         Text(
             modifier = Modifier.padding(bottom = 8.dp),
             text = type,
-            color = colorResource(R.color.gray_300),
+            color = MaterialTheme.colorScheme.onSurface,
             style = Typography.bodyMedium
         )
         OutlinedTextField(
@@ -51,7 +52,7 @@ fun TextField(
             placeholder = {
                 Text(
                     placeholder,
-                    color = colorResource(R.color.gray_300).copy(alpha = 0.5f),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                     style = Typography.bodyMedium
                 )
             },
@@ -61,8 +62,8 @@ fun TextField(
                 focusedBorderColor = colorResource(R.color.green_primary),
                 unfocusedBorderColor = colorResource(R.color.gray_300),
                 cursorColor = colorResource(R.color.gray_300),
-                focusedTextColor = colorResource(R.color.gray_300),
-                unfocusedTextColor = colorResource(R.color.gray_300),
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = colorResource(R.color.gray),
                 disabledTextColor = colorResource(R.color.gray_300),
             ),
             keyboardActions = KeyboardActions(
