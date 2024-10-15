@@ -74,7 +74,7 @@ fun LoginScreen(
             TextField(
                 input = emailInput,
                 type = "Email",
-                placeholder = "Masukkan email Anda",
+                placeholder = stringResource(R.string.masukkan_email),
                 onValueChange = { newInput ->
                     emailInput = newInput
                 },
@@ -86,8 +86,8 @@ fun LoginScreen(
             )
             TextField(
                 input = passwordInput,
-                type = "Kata Sandi",
-                placeholder = "Masukkan kata sandi Anda",
+                type = stringResource(R.string.katasandi),
+                placeholder = stringResource(R.string.masukkan_katasandi),
                 onValueChange = { newInput ->
                     passwordInput = newInput
                 },
@@ -142,8 +142,8 @@ fun LoginTitleText() {
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = "Masukkan email dan kata sandi Anda untuk masuk ke akun anda",
-            style = Typography.bodyLarge
+            text = stringResource(R.string.login_desc),
+            style = Typography.bodyMedium
         )
     }
 
@@ -166,7 +166,7 @@ fun OrDivider(
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
         Text(
-            text = "atau",
+            text = stringResource(R.string.atau),
             modifier = Modifier.padding(horizontal = 16.dp),
             color = MaterialTheme.colorScheme.onSurface,
             style = Typography.bodyMedium
@@ -184,7 +184,9 @@ fun OrDivider(
 @Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
 fun LoginScreenPreview() {
-    BinaSehatTheme {
+    BinaSehatTheme(
+        darkTheme = false
+    ) {
         LoginScreen(rememberNavController())
     }
 }

@@ -153,7 +153,7 @@ fun FormTitleText() {
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = "Harap isi informasi anda. Hal ini membantu kami menyesuaikan pengalaman anda menggunakan BinaSehat dan memastikan kami memiliki detail yang paling akurat",
+            text = stringResource(R.string.form_desc),
             style = Typography.bodyMedium,
             textAlign = TextAlign.Start
         )
@@ -176,7 +176,7 @@ fun BirthEditText() {
             .padding(top = 16.dp)
     ) {
         Text(
-            text = "Tanggal Lahir",
+            text = stringResource(R.string.tanggal_lahir),
             style = Typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -212,7 +212,7 @@ fun BirthEditText() {
                         contentColor = colorResource(R.color.green_primary)
                     ),
                 ) {
-                    Text("Batal")
+                    Text(stringResource(R.string.batal))
                 }
             },
         ) {
@@ -238,7 +238,7 @@ fun BirthEditText() {
         textStyle = Typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
         placeholder = {
             Text(
-                "Tanggal Lahir",
+                stringResource(R.string.tanggal_lahir),
                 color = onSurfaceColor.copy(alpha = 0.5f),
                 style = Typography.bodyMedium
             )
@@ -252,7 +252,7 @@ fun BirthEditText() {
         trailingIcon = {
             Icon(
                 Icons.Default.DateRange,
-                contentDescription = "Select date",
+                contentDescription = stringResource(R.string.pilih_tanggal),
                 modifier = Modifier.clickable {
                     openDialog = true
                 }
@@ -271,7 +271,7 @@ fun GenderOption() {
             .padding(top = 16.dp)
     ) {
         Text(
-            text = "Jenis Kelamin",
+            text = stringResource(R.string.jenis_kelamin),
             style = Typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -283,7 +283,7 @@ fun GenderOption() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             GenderButton(
-                text = "Laki-Laki",
+                text = stringResource(R.string.laki_laki),
                 icon = painterResource(R.drawable.baseline_male_24),
                 isSelected = selectedGender == "male",
                 onClick = { selectedGender = "male" },
@@ -292,7 +292,7 @@ fun GenderOption() {
             )
 
             GenderButton(
-                text = "Perempuan",
+                text = stringResource(R.string.perempuan),
                 icon = painterResource(R.drawable.baseline_female_24),
                 isSelected = selectedGender == "female",
                 onClick = { selectedGender = "female" },
@@ -390,7 +390,7 @@ fun BodyStats() {
             .padding(top = 16.dp, bottom = 16.dp)
     ) {
         Text(
-            text = "Statistik Badan",
+            text = stringResource(R.string.statistik_badan),
             style = Typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -401,7 +401,7 @@ fun BodyStats() {
             HealthForm(
                 onClick = { showHeightPicker = true},
                 input = height?.toString() ?: "",
-                placeholder = "Tinggi",
+                placeholder = stringResource(R.string.tinggi),
                 icon = painterResource(R.drawable.rounded_height_24),
                 trailingText = "cm",
                 modifier = Modifier.weight(1f)
@@ -409,7 +409,7 @@ fun BodyStats() {
             HealthForm(
                 onClick = { showWeightPicker = true},
                 input = weight?.toString() ?: "",
-                placeholder = "Berat",
+                placeholder = stringResource(R.string.berat),
                 icon = painterResource(R.drawable.rounded_monitor_weight_24),
                 trailingText = "kg",
                 modifier = Modifier.weight(1f)
@@ -438,7 +438,7 @@ fun BodyStats() {
                 )
 
                 CustomOutlinedButton(
-                    text = "Simpan",
+                    text = stringResource(R.string.simpan),
                     onClick = {
                         height = tempHeight
                         showHeightPicker = false
@@ -470,7 +470,7 @@ fun BodyStats() {
                 )
 
                 CustomOutlinedButton(
-                    text = "Simpan",
+                    text = stringResource(R.string.simpan),
                     onClick = {
                         weight = tempWeight
                         showWeightPicker = false
@@ -515,7 +515,6 @@ fun HealthForm(
             Text(
                 trailingText,
                 style = Typography.bodyMedium,
-                modifier = Modifier.padding(end = 4.dp)
             )
         },
         modifier = modifier
@@ -535,7 +534,9 @@ fun HealthForm(
 @Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
 fun FormScreenPreview() {
-    BinaSehatTheme {
+    BinaSehatTheme(
+        darkTheme = false,
+    ) {
         FormScreen(rememberNavController())
     }
 }

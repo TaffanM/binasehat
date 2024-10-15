@@ -71,7 +71,9 @@ fun BackButtonLayout(
 @Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
 fun BackButtonPreview() {
-    BinaSehatTheme {
+    BinaSehatTheme(
+        darkTheme = false,
+    ) {
         BackButton(
             text = "Login",
             icon = painterResource(R.drawable.round_arrow_back_ios_24),

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.mage.binasehat.ui.screen.accountdetail.AccountDetailScreen
 import com.mage.binasehat.ui.screen.form.FormScreen
 import com.mage.binasehat.ui.screen.login.LoginScreen
 import com.mage.binasehat.ui.screen.main.MainScreenWithBottomBar
@@ -26,6 +27,7 @@ fun BinaSehatApp(
         composable("register") { RegisterScreen(navController) }
         composable("form") { FormScreen(navController) }
         composable("settings") { SettingsScreen(navController) }
+        composable("account_detail") { AccountDetailScreen(navController) }
         composable("main") {
             MainScreenWithBottomBar(navController = navController)
         }

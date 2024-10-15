@@ -285,7 +285,9 @@ fun DotsIndicator(
 @Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
 fun OnboardingScreenPreview() {
-    BinaSehatTheme {
+    BinaSehatTheme(
+        darkTheme = false
+    ) {
         OnboardingScreen(rememberNavController())
     }
 }

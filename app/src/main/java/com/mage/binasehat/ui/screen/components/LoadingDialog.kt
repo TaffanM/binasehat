@@ -16,10 +16,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.tv.material3.Text
+import com.mage.binasehat.R
 import com.mage.binasehat.ui.theme.Typography
 
 @Composable
@@ -44,7 +46,7 @@ fun LoadingDialog(
                     strokeWidth = 8.dp
                 )
                 Text(
-                    text = "Memuat...",
+                    text = stringResource(R.string.memuat),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = Typography.bodyMedium,
                     modifier = Modifier.padding(top = 32.dp)

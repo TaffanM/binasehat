@@ -202,7 +202,7 @@ fun NutritionBar() {
 
             ) {
                 Text(
-                    text = "Kalori masuk dan kalori keluar",
+                    text = stringResource(R.string.kalori_masuk_keluar),
                     style = Typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = Color.White

@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.mage.binasehat.ui.util.UserPreferences
 
 val LightColorScheme = lightColorScheme(
     primary = GreenPrimary,
@@ -41,7 +42,7 @@ val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun BinaSehatTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),  // Default behavior to follow system setting
+    darkTheme: Boolean,
     dynamicColor: Boolean = false,  // Enable dynamic colors for Android 12+
     content: @Composable () -> Unit
 ) {

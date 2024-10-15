@@ -71,7 +71,7 @@ fun RegisterScreen(
             TextField(
                 input = emailRegister,
                 type = "Email",
-                placeholder = "Masukkan email anda",
+                placeholder = stringResource(R.string.masukkan_email),
                 onValueChange = { newItem ->
                     emailRegister = newItem
                 },
@@ -84,7 +84,7 @@ fun RegisterScreen(
             TextField(
                 input = usernameRegister,
                 type = "Username",
-                placeholder = "Masukkan username anda",
+                placeholder = stringResource(R.string.masukkan_username),
                 onValueChange = { newItem ->
                     usernameRegister = newItem
                 },
@@ -96,8 +96,8 @@ fun RegisterScreen(
             )
             TextField(
                 input = passwordRegister,
-                type = "Kata Sandi",
-                placeholder = "Masukkan kata sandi anda",
+                type = stringResource(R.string.katasandi),
+                placeholder = stringResource(R.string.masukkan_katasandi),
                 onValueChange = { newItem ->
                     passwordRegister = newItem
                 },
@@ -109,8 +109,8 @@ fun RegisterScreen(
             )
             TextField(
                 input = confirmPasswordRegister,
-                type = "Konfirmasi Kata Sandi",
-                placeholder = "Konfirmasi kata sandi anda",
+                type = stringResource(R.string.konfirmasi_katasandi),
+                placeholder = stringResource(R.string.konfirmasi_katasandi),
                 onValueChange = { newItem ->
                     confirmPasswordRegister = newItem
                 },
@@ -157,7 +157,7 @@ fun RegisterTitleText() {
         )
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = "Selamat datang di aplikasi BinaSehat! Kami sangat senang apabila anda bergabung. Untuk membuat akun anda, mohon isi data dibawah ini",
+            text = stringResource(R.string.daftar_deskripsi),
             style = Typography.bodyMedium,
             textAlign = TextAlign.Start
         )
@@ -170,7 +170,9 @@ fun RegisterTitleText() {
 @Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
 fun RegisterScreenPreview() {
-    BinaSehatTheme {
+    BinaSehatTheme(
+        darkTheme = false
+    ) {
         RegisterScreen(rememberNavController())
     }
 }
