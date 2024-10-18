@@ -1,5 +1,9 @@
 package com.mage.binasehat.ui.screen.main
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,10 +38,54 @@ fun MainScreenWithBottomBar(
             startDestination = "home",
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable("home") { DashboardScreen(navController) }
-            composable("food") { FoodScreen(navController) }
-            composable("exercise") { /* ExerciseScreen() */ }
-            composable("profile") { /* ProfileScreen() */ }
+            composable("home",
+                enterTransition = {
+                    return@composable fadeIn(
+                        animationSpec = tween(700)
+                    )
+                },
+                exitTransition = {
+                    return@composable fadeOut(
+                        animationSpec = tween(700)
+                    )
+                }
+            ) { DashboardScreen(navController) }
+            composable("food",
+                enterTransition = {
+                    return@composable fadeIn(
+                        animationSpec = tween(700)
+                    )
+                },
+                exitTransition = {
+                    return@composable fadeOut(
+                        animationSpec = tween(700)
+                    )
+                }
+            ) { FoodScreen(navController) }
+            composable("exercise",
+                enterTransition = {
+                    return@composable fadeIn(
+                        animationSpec = tween(700)
+                    )
+                },
+                exitTransition = {
+                    return@composable fadeOut(
+                        animationSpec = tween(700)
+                    )
+                }
+            ) { /* ExerciseScreen() */ }
+            composable("profile",
+                enterTransition = {
+                    return@composable fadeIn(
+                        animationSpec = tween(700)
+                    )
+                },
+                exitTransition = {
+                    return@composable fadeOut(
+                        animationSpec = tween(700)
+                    )
+                }
+            ) { /* ProfileScreen() */ }
         }
     }
 }

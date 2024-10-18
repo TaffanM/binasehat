@@ -32,8 +32,6 @@ fun LanguageDialog(
     if (isOpen) {
         AlertDialog(
             onDismissRequest = onDismiss,
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.surface),
             title = {
                 Text(
                     text = stringResource(R.string.pilih_bahasa),

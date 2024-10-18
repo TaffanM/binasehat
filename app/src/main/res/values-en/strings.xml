@@ -57,4 +57,8 @@
     <string name="laki_laki">Male</string>
     <string name="perempuan">Female</string>
     <string name="memuat">Loading...</string>
+    <string name="greeting_morning">Good Morning!</string>
+    <string name="greeting_afternoon">Good Afternoon!</string>
+    <string name="greeting_evening">Good Evening!</string>
+    <string name="greeting_night">Good Evening!</string>
 </resources>

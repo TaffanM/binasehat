@@ -45,12 +45,14 @@ import com.mage.binasehat.ui.screen.components.AppBar
 import com.mage.binasehat.ui.screen.components.DateSlider
 import com.mage.binasehat.ui.theme.PlusJakartaSans
 import com.mage.binasehat.ui.theme.Typography
+import com.mage.binasehat.ui.util.TimeUtility
 
 @Composable
 fun DashboardScreen(
     navController: NavController
 ) {
     val scrollState = rememberScrollState()
+    val greeting = TimeUtility.getGreeting()
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -67,7 +69,7 @@ fun DashboardScreen(
             ) {
                 Row {
                     Text(
-                        text = "Selamat Pagi!",
+                        text = greeting,
                         style = Typography.titleMedium,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurface
