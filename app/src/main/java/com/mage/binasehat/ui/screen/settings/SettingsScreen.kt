@@ -83,7 +83,11 @@ fun SettingsScreen(
                 title = stringResource(R.string.detail_akun),
                 icon = painterResource(R.drawable.rounded_person_edit_24),
                 onClick = {
-                    navController.navigate("account_detail")
+                    navController.navigate("account_detail") {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
             Text(

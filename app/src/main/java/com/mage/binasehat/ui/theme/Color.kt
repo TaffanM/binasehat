@@ -17,6 +17,6 @@ val DarkWhitePrimary = Color(0xFFE0E0E0)
 val DarkGreenSecondary = Color(0xFF5BCC4F)
 val DarkGreenTertiary = Color(0xFF2C6B3F)
 val DarkGreenBackground = Color(0xFF06130E)
-val DarkComponentPrimary = Color(0xFF3A3D3A)
+val DarkComponentPrimary = Color(0xFF2A2D2A)
 
 

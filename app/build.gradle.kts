@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
+    id("kotlin-kapt")
 }
 
 android {
@@ -62,7 +64,21 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.splash)
     implementation(libs.lottie)
-
+    implementation(libs.coil)
+    implementation(libs.coil.video)
+    implementation(libs.coil.gif)
+    implementation(libs.coil.compose)
+    implementation(libs.camerax.core)
+    implementation(libs.camerax.camera2)
+    implementation(libs.camerax.lifecycle)
+    implementation(libs.camerax.video)
+    implementation(libs.camerax.view)
+    implementation(libs.camerax.extensions)
+    implementation(libs.accompanist)
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt)
+    implementation(libs.androidx.runtime.livedata)
+    kapt(libs.hilt.compiler)
     implementation(libs.androidx.tv.material)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.material)

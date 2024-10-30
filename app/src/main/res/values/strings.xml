@@ -57,8 +57,19 @@
     <string name="laki_laki">Laki Laki</string>
     <string name="perempuan">Perempuan</string>
     <string name="memuat">Memuat...</string>
-    <string name="greeting_morning">Selamat Pagi!</string>
-    <string name="greeting_afternoon">Selamat Siang!</string>
-    <string name="greeting_evening">Selamat Sore!</string>
-    <string name="greeting_night">Selamat Malam!</string>
+    <string name="greeting_morning">Selamat Pagi! 🌅</string>
+    <string name="greeting_afternoon">Selamat Siang! 🌤️</string>
+    <string name="greeting_evening">Selamat Sore! 🌇</string>
+    <string name="greeting_night">Selamat Malam! 🌃</string>
+    <string name="nama">Nama</string>
+    <string name="katasandi_baru">Kata Sandi Baru</string>
+    <string name="konfirmasi_katasandi_baru">Konfirmasi Kata Sandi Baru</string>
+    <string name="masukkan_katasandi_baru">Masukkan Kata Sandi Baru Anda</string>
+    <string name="konfirmasi_masukkan_katasandi_baru">Konfirmasi Kata Sandi Baru Anda</string>
+    <string name="email_anda">Email Anda</string>
+    <string name="username_anda">Username Anda</string>
+    <string name="tambah_makanan_manual">Tambah Manual</string>
+    <string name="scan_kamera">Scan Kamera</string>
+    <string name="tambah_sukses">Item berhasil ditambahkan</string>
+    <string name="cari_makanan">Cari Makanan…</string>
 </resources>

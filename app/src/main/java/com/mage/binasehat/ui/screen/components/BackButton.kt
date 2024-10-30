@@ -3,12 +3,10 @@ package com.mage.binasehat.ui.screen.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,22 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mage.binasehat.R
-import com.mage.binasehat.ui.screen.onboarding.SkipButton
 import com.mage.binasehat.ui.theme.BinaSehatTheme
 import com.mage.binasehat.ui.theme.Typography
-import kotlinx.coroutines.launch
 
 @Composable
 fun BackButton(
     text: String,
     icon: Painter,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Button(
         onClick = onClick,
@@ -39,7 +35,8 @@ fun BackButton(
             containerColor = Color.Transparent,
         ),
         shape = RoundedCornerShape(10.dp),
-        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)
+        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
+        modifier = modifier
     ) {
         BackButtonLayout(text, icon)
     }
@@ -48,11 +45,11 @@ fun BackButton(
 @Composable
 fun BackButtonLayout(
     text: String,
-    icon: Painter,
+    icon: Painter
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         Icon(
             painter = icon,

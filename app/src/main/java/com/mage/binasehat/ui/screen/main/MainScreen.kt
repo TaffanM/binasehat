@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.mage.binasehat.ui.screen.components.BottomBar
 import com.mage.binasehat.ui.screen.dashboard.DashboardScreen
 import com.mage.binasehat.ui.screen.food.FoodScreen
+import com.mage.binasehat.ui.screen.profile.ProfileScreen
 
 @Composable
 fun MainScreenWithBottomBar(
@@ -41,51 +42,51 @@ fun MainScreenWithBottomBar(
             composable("home",
                 enterTransition = {
                     return@composable fadeIn(
-                        animationSpec = tween(700)
+                        animationSpec = tween(200)
                     )
                 },
                 exitTransition = {
                     return@composable fadeOut(
-                        animationSpec = tween(700)
+                        animationSpec = tween(200)
                     )
                 }
             ) { DashboardScreen(navController) }
             composable("food",
                 enterTransition = {
                     return@composable fadeIn(
-                        animationSpec = tween(700)
+                        animationSpec = tween(200)
                     )
                 },
                 exitTransition = {
                     return@composable fadeOut(
-                        animationSpec = tween(700)
+                        animationSpec = tween(200)
                     )
                 }
             ) { FoodScreen(navController) }
             composable("exercise",
                 enterTransition = {
                     return@composable fadeIn(
-                        animationSpec = tween(700)
+                        animationSpec = tween(200)
                     )
                 },
                 exitTransition = {
                     return@composable fadeOut(
-                        animationSpec = tween(700)
+                        animationSpec = tween(200)
                     )
                 }
             ) { /* ExerciseScreen() */ }
             composable("profile",
                 enterTransition = {
                     return@composable fadeIn(
-                        animationSpec = tween(700)
+                        animationSpec = tween(200)
                     )
                 },
                 exitTransition = {
                     return@composable fadeOut(
-                        animationSpec = tween(700)
+                        animationSpec = tween(200)
                     )
                 }
-            ) { /* ProfileScreen() */ }
+            ) { ProfileScreen(navController) }
         }
     }
 }

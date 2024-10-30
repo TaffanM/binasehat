@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.mage.binasehat.R
 import com.mage.binasehat.ui.screen.components.BackButton
 import com.mage.binasehat.ui.screen.components.CustomFillButton
+import com.mage.binasehat.ui.screen.components.PasswordTextField
 import com.mage.binasehat.ui.screen.components.TextField
 import com.mage.binasehat.ui.theme.BinaSehatTheme
 import com.mage.binasehat.ui.theme.PlusJakartaSans
@@ -94,7 +95,7 @@ fun RegisterScreen(
                 },
                 keyboardType = KeyboardType.Text
             )
-            TextField(
+            PasswordTextField(
                 input = passwordRegister,
                 type = stringResource(R.string.katasandi),
                 placeholder = stringResource(R.string.masukkan_katasandi),
@@ -107,7 +108,7 @@ fun RegisterScreen(
                 },
                 keyboardType = KeyboardType.Password
             )
-            TextField(
+            PasswordTextField(
                 input = confirmPasswordRegister,
                 type = stringResource(R.string.konfirmasi_katasandi),
                 placeholder = stringResource(R.string.konfirmasi_katasandi),
@@ -129,7 +130,8 @@ fun RegisterScreen(
                             inclusive = true
                         }
                     }
-                }
+                },
+                modifier = Modifier
             )
 
 

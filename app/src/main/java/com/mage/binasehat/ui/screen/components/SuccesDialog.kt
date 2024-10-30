@@ -66,7 +66,8 @@ fun SuccessDialog(
                 Spacer(modifier = Modifier.height(8.dp)) // Add some space between text and button
                 CustomFillButton(
                     text = "OK",
-                    onClick = onDismiss
+                    onClick = onDismiss,
+                    modifier = Modifier
                 )
             }
         }

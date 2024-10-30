@@ -1,7 +1,6 @@
 package com.mage.binasehat.ui.screen.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,10 +33,11 @@ import androidx.navigation.compose.rememberNavController
 import com.mage.binasehat.R
 import com.mage.binasehat.ui.screen.components.CustomFillButton
 import com.mage.binasehat.ui.screen.components.CustomOutlinedButton
+import com.mage.binasehat.ui.screen.components.PasswordTextField
+import com.mage.binasehat.ui.screen.components.TextField
 import com.mage.binasehat.ui.theme.BinaSehatTheme
 import com.mage.binasehat.ui.theme.PlusJakartaSans
 import com.mage.binasehat.ui.theme.Typography
-import com.mage.binasehat.ui.screen.components.TextField
 
 @Composable
 fun LoginScreen(
@@ -84,7 +82,7 @@ fun LoginScreen(
                 },
                 keyboardType = KeyboardType.Email
             )
-            TextField(
+            PasswordTextField(
                 input = passwordInput,
                 type = stringResource(R.string.katasandi),
                 placeholder = stringResource(R.string.masukkan_katasandi),
@@ -116,11 +114,9 @@ fun LoginScreen(
                             inclusive = true
                         }
                     }
-                }
+                },
+                modifier = Modifier
             )
-
-
-
         }
     }
 

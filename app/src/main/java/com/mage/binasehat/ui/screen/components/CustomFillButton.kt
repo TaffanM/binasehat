@@ -18,10 +18,14 @@ import com.mage.binasehat.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun CustomFillButton(text: String, onClick: () -> Unit) {
+fun CustomFillButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Button(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(R.color.green_primary),

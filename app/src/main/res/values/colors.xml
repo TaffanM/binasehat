@@ -16,5 +16,9 @@
     <color name="dark_white_primary">#E0E0E0</color>
     <color name="dark_green_background">#06130E</color>
     <color name="blue_gender">#4285F4</color>
-    <color name="pink_gender">#EB41A7</color>"
+    <color name="pink_gender">#EB41A7</color>
+    <color name="dark_red">#C00000</color>
+    <color name="dark_green">#008000</color>
+    <color name="dark_blue">#0000CD</color>
+    <color name="dark_yellow">#FFD700</color>
 </resources>
