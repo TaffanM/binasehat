@@ -72,6 +72,12 @@
     <string name="scan_kamera">Scan Camera</string>
     <string name="tambah_sukses">Item successfully added</string>
     <string name="cari_makanan">Search for Food…</string>
+    <string name="qty">qty</string>
+    <string name="tambah">Add</string>
+    <string name="list_makanan">Food List</string>
+    <string name="item_ditambahkan">Added Item</string>
+    <string name="total_item">Total Items</string>
+
 
 
 </resources>

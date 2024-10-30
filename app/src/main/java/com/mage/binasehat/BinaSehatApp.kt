@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mage.binasehat.ui.screen.accountdetail.AccountDetailScreen
+import com.mage.binasehat.ui.screen.food.CartScreen
 import com.mage.binasehat.ui.screen.food.DetailFoodScreen
 import com.mage.binasehat.ui.screen.food.FoodListScreen
 import com.mage.binasehat.ui.screen.food.FoodViewModel
@@ -44,18 +45,25 @@ fun BinaSehatApp(
         composable("account_detail") { AccountDetailScreen(navController) }
         composable("scan") { ScanScreen(navController) }
         composable("foodList",
-            enterTransition = { return@composable slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up, tween(300)) },
+            enterTransition = { return@composable fadeIn(tween(300)) },
             exitTransition = { return@composable fadeOut(tween(300)) }
         )
         { FoodListScreen(navController, foodViewModel) }
         composable(
             route = "detailFoodScreen/{foodId}",
             arguments = listOf(navArgument("foodId") { type = NavType.IntType }),
-            enterTransition = {  return@composable fadeIn(tween(300)) },
+            enterTransition = {  return@composable slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Up, tween(300)) },
             exitTransition = { return@composable fadeOut(tween(300)) }
         ) {backStackEntry ->
             val foodId = backStackEntry.arguments?.getInt("foodId") ?: 0
             DetailFoodScreen(navController, foodId, foodViewModel)
+        }
+        composable(
+            route = "cart",
+            enterTransition = { return@composable slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(300)) },
+            exitTransition = { return@composable slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(300)) }
+        ) {
+            CartScreen(navController)
         }
         composable("main") {
             MainScreenWithBottomBar(navController = navController)

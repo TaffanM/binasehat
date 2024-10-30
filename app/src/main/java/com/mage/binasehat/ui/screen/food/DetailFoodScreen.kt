@@ -88,8 +88,8 @@ fun DetailFoodScreen(
             ) {
                 DetailFoodContent(
                     food = food
-                ) {
-                    foodViewModel.addItem(food)
+                ) { quantity ->
+                    foodViewModel.addItem(food, quantity)
                     navController.popBackStack()
                 }
             }
@@ -101,7 +101,7 @@ fun DetailFoodScreen(
 @Composable
 fun DetailFoodContent(
     food: Food,
-    onAddToCart: () -> Unit
+    onAddToCart: (quantity: Int) -> Unit
 ) {
     val context = LocalContext.current
     Box(
@@ -213,10 +213,10 @@ fun DetailFoodContent(
 
                 // Add Button
                 CustomFillButton(
-                    text = "Tambah",
+                    text = stringResource(R.string.tambah),
                     onClick = {
                         Toast.makeText(context, R.string.tambah_sukses, Toast.LENGTH_SHORT).show()
-                        onAddToCart()
+                        onAddToCart(quantity.intValue)
                     },
                 )
             }

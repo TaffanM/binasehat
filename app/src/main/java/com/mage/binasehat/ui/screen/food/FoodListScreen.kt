@@ -1,6 +1,11 @@
 package com.mage.binasehat.ui.screen.food
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -8,15 +13,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -28,9 +37,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxState
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -55,11 +68,13 @@ import coil.compose.AsyncImage
 import com.mage.binasehat.R
 import com.mage.binasehat.data.local.fake.FakeData
 import com.mage.binasehat.data.model.Food
+import com.mage.binasehat.ui.model.CartItem
 import com.mage.binasehat.ui.screen.components.BackButton
 import com.mage.binasehat.ui.theme.BinaSehatTheme
 import com.mage.binasehat.ui.theme.Typography
+import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun FoodListScreen(
     navController: NavController,
@@ -68,18 +83,18 @@ fun FoodListScreen(
     var searchQuery by remember { mutableStateOf("") }
     var isSearchActive by remember { mutableStateOf(false) }
 
-    val addedItems by foodViewModel.addedItems.collectAsState()
+    val cartItems by foodViewModel.cartItems.collectAsState()
     val showBottomSheet = remember { mutableStateOf(false) }
     val showFloatingButton = remember { mutableStateOf(false) }
 
-    LaunchedEffect(addedItems) {
-        if (addedItems.isNotEmpty()) {
+    LaunchedEffect(cartItems) {
+        if (cartItems.isNotEmpty()) {
             showFloatingButton.value = true
         }
     }
 
-    Log.d("FoodListScreen", "Added Items: $addedItems")
-    Log.d("FoodListScreen", "Added Items Size: ${addedItems.size}")
+    Log.d("FoodListScreen", "Added Items: $cartItems")
+    Log.d("FoodListScreen", "Added Items Size: ${cartItems.size}")
     Log.d("FoodListScreen", "Show Floating Button: ${showFloatingButton.value}")
 
     // Filter the food data based on the search query
@@ -161,9 +176,9 @@ fun FoodListScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text("Added Items")
-                    // show size
-                    Text("Total Items (${addedItems.size})", style = Typography.bodySmall)
+                    Text(stringResource(R.string.item_ditambahkan), style = Typography.bodyMedium)
+                    Spacer(modifier = Modifier.padding(2.dp))
+                    Text(stringResource(R.string.total_item) + " : " + "(${cartItems.size})", style = Typography.bodySmall, fontWeight = FontWeight.Bold)
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
@@ -175,8 +190,17 @@ fun FoodListScreen(
         }
         if (showBottomSheet.value) {
             BottomSheetDialog(
-                addedItems = addedItems,
-                onDismissRequest = { showBottomSheet.value = false }
+                cartItems = cartItems,
+                onDismissRequest = {
+                    showBottomSheet.value = false
+               },
+                onItemRemove = { food ->
+                    foodViewModel.removeItem(food)
+                    if (cartItems.isEmpty()) {
+                        showFloatingButton.value = false
+                    }
+                },
+                navController = navController
             )
         }
 
@@ -188,37 +212,145 @@ fun FoodListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetDialog(
-    addedItems: List<Food>,
-    onDismissRequest: () -> Unit
+    cartItems: List<CartItem>,
+    onDismissRequest: () -> Unit,
+    onItemRemove: (Food) -> Unit,
+    navController: NavController
 ) {
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-        sheetState = rememberModalBottomSheetState()
+        sheetState = sheetState,
+        containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = {
+            BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom)
+        },
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text("Added Items", style = Typography.titleMedium)
-
-            LazyColumn {
-                items(addedItems) { food ->
-                    Text(food.name, style = Typography.titleMedium)
-                    HorizontalDivider()
-                }
-            }
-
-            Button(
-                onClick = onDismissRequest,
-                modifier = Modifier.align(Alignment.End)
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .fillMaxHeight()
             ) {
-                Text("Close")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(stringResource(R.string.item_ditambahkan), style = Typography.titleMedium)
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(
+                        onClick = onDismissRequest,
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.round_clear_24),
+                            contentDescription = "Close"
+                        )
+                    }
+                }
+                Text(stringResource(R.string.total_item) + " : " + "(${cartItems.size})", style = Typography.bodySmall,  fontWeight = FontWeight.Bold)
+
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(cartItems, key = { it.food.foodId }) { food ->
+                        SwipeToDeleteContainer(
+                            item = food,
+                            onDelete = { onItemRemove(it.food) }
+                        ) { item ->
+                            Card {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(MaterialTheme.colorScheme.background)
+                                        .padding(vertical = 16.dp)
+                                ) {
+                                    Card(
+                                        modifier = Modifier
+                                            .width(100.dp)
+                                            .height(100.dp),
+                                        shape = RoundedCornerShape(20.dp),
+                                    ) {
+                                        AsyncImage(
+                                            model = item.food.photo,
+                                            contentDescription = item.food.name,
+                                        )
+                                    }
+
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(start = 16.dp),
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(
+                                            style = Typography.titleMedium,
+                                            fontWeight = FontWeight.Bold,
+                                            text = item.food.name,
+                                        )
+                                        Text(
+                                            style = Typography.bodySmall,
+                                            text = stringResource(R.string.qty) + " : " + item.quantity.toString(),
+                                            modifier = Modifier.padding(top = 4.dp)
+                                        )
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
+                }
+
+                Button(
+                    onClick = {
+                        onDismissRequest()
+                        navController.navigate("cart")
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(R.color.green_primary),
+                        contentColor = colorResource(R.color.white_bg)
+                    ),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(stringResource(R.string.selanjutnya), style = Typography.bodyMedium)
+                        Spacer(modifier = Modifier.padding(4.dp))
+                        Icon(
+                            painter = painterResource(R.drawable.round_arrow_forward_24),
+                            contentDescription = null
+                        )
+                    }
+                }
             }
         }
     }
 }
 
+
 @Composable
-fun FoodItem(food: Food, onClick: () -> Unit) {
+fun FoodItem(
+    food: Food,
+    onClick: () -> Unit
+) {
     val interactionSource = remember { MutableInteractionSource() }
     Card(
         modifier = Modifier
@@ -238,7 +370,7 @@ fun FoodItem(food: Food, onClick: () -> Unit) {
     ) {
         Box(
             modifier = Modifier
-                .padding(vertical = 8.dp) // Padding for content inside the card
+                .padding(vertical = 8.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -281,6 +413,87 @@ fun FoodItem(food: Food, onClick: () -> Unit) {
 
         }
     }
+}
+
+@Composable
+fun <T> SwipeToDeleteContainer(
+    item: T,
+    onDelete: (T) -> Unit,
+    animationDuration: Int = 500,
+    content: @Composable (T) -> Unit
+) {
+    val isRemoved = remember { mutableStateOf(false) }
+    val swipeDismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { dismissValue ->
+            if (dismissValue == SwipeToDismissBoxValue.EndToStart) {
+                isRemoved.value = true
+                true
+            } else {
+                false
+            }
+        }
+    )
+
+    LaunchedEffect(isRemoved.value) {
+        if (isRemoved.value) {
+            delay(animationDuration.toLong())
+            swipeDismissState.reset()
+            onDelete(item)
+        }
+    }
+
+    AnimatedVisibility(
+        visible = !isRemoved.value,
+        exit = shrinkVertically(
+            animationSpec = tween(durationMillis = animationDuration),
+            shrinkTowards = Alignment.Top
+        ) + fadeOut()
+    ) {
+        SwipeToDismissBox(
+            state = swipeDismissState,
+            backgroundContent = {
+                DeleteBackground(swipeDismissState)
+            },
+            content = { content(item)},
+            enableDismissFromEndToStart = true,
+            enableDismissFromStartToEnd = false
+        )
+
+    }
+
+
+
+}
+
+@Composable
+fun DeleteBackground(
+    swipeDismissState: SwipeToDismissBoxState,
+) {
+    val color = if (swipeDismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart) {
+        MaterialTheme.colorScheme.error
+    } else {
+        Color.Transparent
+    }
+
+    Card {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color)
+                .padding(16.dp),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.round_delete_24),
+                contentDescription = "Delete",
+                tint = Color.White
+            )
+        }
+    }
+
+
+
+
 }
 
 @Composable
