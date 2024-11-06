@@ -9,6 +9,7 @@ import com.mage.binasehat.data.model.Food
 import com.mage.binasehat.ui.model.CartItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class FoodViewModel : ViewModel() {
     private val _cartItems = MutableStateFlow<List<CartItem>>(emptyList())
@@ -36,4 +37,26 @@ class FoodViewModel : ViewModel() {
             _cartItems.value = updatedCartItems
         }
     }
+
+    fun increaseQuantity(food: Food) {
+        _cartItems.update { cart ->
+            cart.map { item ->
+                if (item.food.foodId == food.foodId) {
+                    item.copy(quantity = item.quantity  + 1)
+                } else item
+            }
+        }
+    }
+
+    fun decreaseQuantity(food: Food) {
+        _cartItems.update { cart ->
+            cart.map { item ->
+                if (item.food.foodId == food.foodId && item.quantity > 1) {
+                    item.copy(quantity = item.quantity - 1)
+                } else item
+            }
+        }
+    }
+
+
 }

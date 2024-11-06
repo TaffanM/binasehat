@@ -15,16 +15,15 @@ import androidx.compose.ui.unit.dp
 import com.mage.binasehat.R
 
 @Composable
-fun CustomOutlinedButton(text: String, onClick: () -> Unit) {
+fun CustomOutlinedButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
     ) {
         androidx.compose.material3.OutlinedButton(
             onClick =  onClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
+            modifier = modifier
+                .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             border = BorderStroke(1.dp, color = colorResource(R.color.green_primary))
         ) {
@@ -34,7 +33,5 @@ fun CustomOutlinedButton(text: String, onClick: () -> Unit) {
                 style = MaterialTheme.typography.bodyMedium
             )
         }
-        }
-
-
+    }
 }

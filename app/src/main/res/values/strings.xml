@@ -34,8 +34,8 @@
     <string name="detail_akun">Detail Akun</string>
     <string name="pilih_bahasa">Pilih Bahasa</string>
     <string name="batal">Batal</string>
-    <string name="inggris">Inggris</string>
-    <string name="indonesia">Indonesia</string>
+    <string name="inggris">English (EN)</string>
+    <string name="indonesia">Bahasa Indonesia (ID)</string>
     <string name="mode_malam">Mode Malam</string>
     <string name="daftar_deskripsi">Selamat datang di aplikasi BinaSehat! Kami sangat senang apabila anda bergabung. Untuk membuat akun anda, mohon isi data dibawah ini</string>
     <string name="masukkan_email">Masukkan email anda</string>
@@ -77,4 +77,11 @@
     <string name="list_makanan">List Makanan</string>
     <string name="item_ditambahkan">Item yang Ditambahkan</string>
     <string name="total_item">Total Item</string>
+    <string name="ada_lagi_yang_mau_ditambah">Ada lagi yang mau ditambah?</string>
+    <string name="tambahkan_hidangan_lain">Tambahkan hidangan lain, jika Anda mau</string>
+    <string name="total_kalori">Total Kalori</string>
+    <string name="list_makanan_kosong">List makanan Anda kosong</string>
+    <string name="detail_nutrisi">Detail Nutrisi</string>
+    <string name="total_nutrisi">Total Nutrisi</string>
+    <string name="rekomendasi_artikel_nutrisi">Rekomendasi Artikel Nutrisi</string>
 </resources>

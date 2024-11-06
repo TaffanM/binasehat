@@ -2,12 +2,14 @@ package com.mage.binasehat.ui.screen.dashboard
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,20 +19,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,46 +53,52 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.tv.material3.Text
 import coil.compose.rememberAsyncImagePainter
 import com.mage.binasehat.R
+import com.mage.binasehat.data.remote.response.ArticlesItem
+import com.mage.binasehat.data.util.UiState
 import com.mage.binasehat.ui.model.NutritionItem
+import com.mage.binasehat.ui.screen.accountdetail.ProfileImage
 import com.mage.binasehat.ui.screen.components.AppBar
 import com.mage.binasehat.ui.screen.components.DateSlider
+import com.mage.binasehat.ui.screen.components.NewsArticleLayout
 import com.mage.binasehat.ui.theme.PlusJakartaSans
 import com.mage.binasehat.ui.theme.Typography
 import com.mage.binasehat.ui.util.TimeUtility
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DashboardScreen(
-    navController: NavController
+    navController: NavController,
+    newsState: UiState<List<ArticlesItem>>,
+    viewModel: NewsViewModel = hiltViewModel()
 ) {
-    val scrollState = rememberScrollState()
+
+
     val greeting = TimeUtility.getGreeting()
 
-    Box(
+    LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-                .verticalScroll(scrollState)
-        ) {
-            AppBar(
-                navController
-            )
+        stickyHeader {
+            AppBar(navController)
+        }
+
+        item {
             Column(
-                modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp)
-            ) {
+                modifier = Modifier.padding(vertical = 16.dp)
+            ){
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    ProfileImageDashboard("")
+                    ProfileImageDashboard("", modifier = Modifier.padding(start = 32.dp, end = 8.dp))
                     Text(
                         text = "Username",
                         style = Typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 8.dp),
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -92,14 +106,16 @@ fun DashboardScreen(
                     text = greeting,
                     style = Typography.titleMedium,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(top = 32.dp),
+                    modifier = Modifier.padding(start = 32.dp, top = 16.dp),
                     color = MaterialTheme.colorScheme.onSurface
                 )
+                Spacer(modifier = Modifier.padding(vertical = 16.dp))
                 DateSlider(
-                    modifier = Modifier.padding(top = 32.dp),
+                    modifier = Modifier.padding(horizontal = 32.dp),
                     onDateSelected = {}
                 )
                 NutritionBar()
+                NewsRow(newsState, viewModel)
             }
         }
     }
@@ -119,7 +135,7 @@ fun NutritionBar() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 32.dp)
+            .padding(horizontal = 32.dp, vertical = 16.dp)
     ) {
         Row(
             modifier = Modifier.padding(bottom = 8.dp),
@@ -253,13 +269,15 @@ fun NutritionBar() {
 @Composable
 fun ProfileImageDashboard(
     imageUrl: String?,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        contentAlignment = Alignment.BottomEnd, // Align pencil icon to the bottom end
-        modifier = Modifier.size(56.dp)
+        contentAlignment = Alignment.BottomEnd,
+        modifier = modifier
+            .size(56.dp)
     ) {
         // Profile image
-        val placeholder = painterResource(id = R.drawable.placeholder_image) // Your placeholder image resource
+        val placeholder = painterResource(id = R.drawable.placeholder_image)
         val painter = rememberAsyncImagePainter(
             model = imageUrl,
             placeholder = placeholder,
@@ -284,6 +302,58 @@ fun ProfileImageDashboard(
     }
 }
 
+@Composable
+fun NewsRow(
+    uiState: UiState<List<ArticlesItem>>,
+    viewModel: NewsViewModel
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.rekomendasi_artikel_nutrisi),
+            style = Typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(start = 32.dp, bottom = 16.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Box{
+            when (uiState) {
+                is UiState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                is UiState.Error -> {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = uiState.errorMessage,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(onClick = { viewModel.fetchNews() }) {
+                            Text("Retry")
+                        }
+                    }
+                }
+                is UiState.Success -> {
+                    val articles = uiState.data
+                    NewsArticleLayout(articles = articles)
+                }
+            }
+        }
+    }
+
+}
+
 
 @Composable
 fun SettingsButtonLayout(
@@ -298,8 +368,8 @@ fun SettingsButtonLayout(
 
 @Preview(showBackground = true, device = Devices.PIXEL_4, showSystemUi = true)
 @Composable
-fun DashboardScreenPreview() {
-    DashboardScreen(
-        navController = NavController(LocalContext.current)
+fun ProfileImagePreview() {
+    ProfileImageDashboard(
+        imageUrl = null
     )
 }

@@ -25,7 +25,8 @@ val LightColorScheme = lightColorScheme(
     background = WhitePrimary,
     surface = WhitePrimary,
     onSurface = Color.Black,
-    primaryContainer = WhiteComponentPrimary
+    primaryContainer = WhiteComponentPrimary,
+    surfaceTint = GrayComponentPrimary
 
 )
 
@@ -37,7 +38,8 @@ val DarkColorScheme = darkColorScheme(
     background = DarkGreenBackground,
     surface = DarkGreenBackground,
     onSurface = Color.White,
-    primaryContainer = DarkComponentPrimary
+    primaryContainer = DarkComponentPrimary,
+    surfaceTint = DarkGrayComponentPrimary
 )
 
 @Composable

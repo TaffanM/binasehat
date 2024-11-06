@@ -1,12 +1,12 @@
 package com.mage.binasehat
 
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mage.binasehat.ui.screen.accountdetail.AccountDetailScreen
+import com.mage.binasehat.ui.screen.dashboard.NewsViewModel
 import com.mage.binasehat.ui.screen.food.CartScreen
 import com.mage.binasehat.ui.screen.food.DetailFoodScreen
 import com.mage.binasehat.ui.screen.food.FoodListScreen
@@ -63,7 +64,7 @@ fun BinaSehatApp(
             enterTransition = { return@composable slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(300)) },
             exitTransition = { return@composable slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(300)) }
         ) {
-            CartScreen(navController)
+            CartScreen(navController, foodViewModel)
         }
         composable("main") {
             MainScreenWithBottomBar(navController = navController)

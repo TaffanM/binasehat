@@ -41,6 +41,7 @@ import com.mage.binasehat.R
 import com.mage.binasehat.data.local.fake.FakeData
 import com.mage.binasehat.data.model.Food
 import com.mage.binasehat.ui.screen.components.BackButton
+import com.mage.binasehat.ui.screen.components.Counter
 import com.mage.binasehat.ui.screen.components.CustomFillButton
 import com.mage.binasehat.ui.theme.BinaSehatTheme
 
@@ -167,46 +168,16 @@ fun DetailFoodContent(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Counter and Add Button
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // Counter
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.outline,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .padding(horizontal = 2.dp)
-                        .height(42.dp)
-                ) {
-                    IconButton(onClick = {
-                        if (quantity.intValue > 1) {
-                            quantity.intValue--
-                        }
-                    }
-                    ) {
-                        Icon(painterResource(R.drawable.round_remove_24), contentDescription = "Decrease")
-                    }
-                    Box(modifier = Modifier.width(40.dp)) { // Adjust width as necessary
-                        Text(
-                            text = quantity.intValue.toString(),
-                            modifier = Modifier.align(Alignment.Center),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
-                    IconButton(onClick = {
-                        quantity.intValue++
-                    }) {
-                        Icon(painterResource(R.drawable.rounded_add_2_24), contentDescription = "Increase")
-                    }
-                }
+                // Counter and Add Button
+                Counter(
+                    quantity = quantity
+                )
 
                 // Fixed width Box to ensure space
                 Box(modifier = Modifier.width(16.dp))
@@ -223,6 +194,7 @@ fun DetailFoodContent(
         }
     }
 }
+
 
 @Composable
 fun NutritionInfo(label: String, value: String) {

@@ -103,7 +103,8 @@ fun LoginScreen(
                             inclusive = true
                         }
                     }
-                }
+                },
+                modifier = Modifier.padding(top = 16.dp)
             )
             OrDivider()
             CustomFillButton(
