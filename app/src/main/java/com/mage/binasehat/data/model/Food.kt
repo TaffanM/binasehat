@@ -5,10 +5,12 @@ data class Food(
     val name: String,
     val calories: Int,
     val category: String,
-    val sugar: Int,
-    val protein: Int,
-    val carb: Int,
-    val fat: Int,
+    val sugar: Float,
+    val protein: Float,
+    val carb: Float,
+    val fat: Float,
+    val headline: String,
     val desc: String,
     val photo: Int
 )
+

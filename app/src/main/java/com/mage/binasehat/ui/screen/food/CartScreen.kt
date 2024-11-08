@@ -47,6 +47,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -78,10 +79,11 @@ fun CartScreen(
     val totalCalories = cartItems.value.sumOf { it.food.calories * it.quantity }
 
     // calculate totals of nutritional values
-    val totalProtein = cartItems.value.sumOf { it.food.protein * it.quantity }
-    val totalCarb = cartItems.value.sumOf { it.food.carb * it.quantity }
-    val totalSugar = cartItems.value.sumOf { it.food.sugar * it.quantity }
-    val totalFat = cartItems.value.sumOf { it.food.fat * it.quantity }
+    val totalProtein = cartItems.value.map { it.food.protein * it.quantity.toFloat() }.sum()
+    val totalCarb = cartItems.value.map { it.food.carb * it.quantity.toFloat() }.sum()
+    val totalSugar = cartItems.value.map { it.food.sugar * it.quantity.toFloat() }.sum()
+    val totalFat = cartItems.value.map { it.food.fat * it.quantity.toFloat() }.sum()
+
 
     Column(
         modifier = Modifier
@@ -370,6 +372,9 @@ fun CartItemLayout(
                             AsyncImage(
                                 model = cartItem.food.photo,
                                 contentDescription = cartItem.food.name,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
                             )
                         }
 

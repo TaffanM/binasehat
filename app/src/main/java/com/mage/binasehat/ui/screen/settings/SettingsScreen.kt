@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -143,6 +147,20 @@ fun SettingsScreen(
                     showDialog = false
                 }
             )
+            Spacer(modifier = Modifier.weight(1f))
+            LogoutButton(
+                text = stringResource(R.string.keluar),
+                onClick = {
+                    navController.navigate("login") {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .padding(bottom = 32.dp)
+
+            )
 
 
         }
@@ -242,6 +260,29 @@ fun DarkModeOption(
                 checked = it
                 onToggle(it)
             }
+        )
+    }
+}
+
+@Composable
+fun LogoutButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorResource(R.color.dark_red),
+            contentColor = colorResource(R.color.white_bg)
+        ),
+        shape = RoundedCornerShape(10.dp)
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

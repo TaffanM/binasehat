@@ -83,6 +83,24 @@
     <string name="list_makanan_kosong">Your list is empty</string>
     <string name="detail_nutrisi">Nutrition Detail</string>
     <string name="total_nutrisi">Nutrition Total</string>
+    <string name="rekomendasi_artikel_nutrisi">Nutritional Article Recommendations</string>
+    <string name="lari">Running</string>
+    <string name="olahraga_lari">Running Sport</string>
+    <string name="total_progres">Total Progress</string>
+    <string name="jam">Hours</string>
+    <string name="sesi_saat_ini">Current Session</string>
+    <string name="lari_sekarang">Run Now</string>
+    <string name="belum_ada_sesi_lari">"It seems we have no records. You can start your run by clicking "</string>
+    <string name="aktivitas_terakhir">RecentActivity</string>
+    <string name="semua">All</string>
+    <string name="urutkan_berdasarkan">Sort By</string>
+    <string name="waktu_lari">Running Time</string>
+    <string name="run_sort_order_date">Date</string>
+    <string name="run_sort_order_duration">Duration</string>
+    <string name="run_sort_order_calories_burned">Calories Burned</string>
+    <string name="run_sort_order_avg_speed">Avg Speed</string>
+    <string name="run_sort_order_distance">Distance</string>
+    <string name="detail_makanan">Food Detail</string>
 
 
 

@@ -3,6 +3,7 @@ package com.mage.binasehat.ui.screen.exercise
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -106,7 +108,7 @@ fun ExerciseScreen(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Text(
-                                            text = "Olahraga",
+                                            text = stringResource(R.string.olahraga),
                                             style = Typography.titleLarge.copy(color = Color.White),
                                         )
                                         Icon(
@@ -123,10 +125,20 @@ fun ExerciseScreen(
                             shape = RoundedCornerShape(8.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-                            modifier = Modifier.fillMaxHeight()
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .clickable {
+                                    navController.navigate("runningMainScreen") {
+                                        popUpTo("runningMainScreen") {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
                         ) {
                             Column(
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxSize()
+
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -154,7 +166,7 @@ fun ExerciseScreen(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Text(
-                                            text = "Lari",
+                                            text = stringResource(R.string.lari),
                                             style = Typography.titleLarge.copy(color = Color.White),
                                         )
                                         Icon(

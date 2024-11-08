@@ -30,7 +30,7 @@ fun LoadingDialog(
 ) {
     Dialog(
         onDismissRequest = onDismiss,
-        DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
     ) {
         Box(
             contentAlignment = Alignment.Center,

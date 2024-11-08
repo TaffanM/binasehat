@@ -84,4 +84,22 @@
     <string name="detail_nutrisi">Detail Nutrisi</string>
     <string name="total_nutrisi">Total Nutrisi</string>
     <string name="rekomendasi_artikel_nutrisi">Rekomendasi Artikel Nutrisi</string>
+    <string name="lari">Lari</string>
+    <string name="olahraga_lari">Olahraga Lari</string>
+    <string name="total_progres">Total Progres</string>
+    <string name="jam">jam</string>
+    <string name="sesi_saat_ini">Sesi Saat Ini</string>
+    <string name="lari_sekarang">Lari Sekarang</string>
+    <string name="belum_ada_sesi_lari">"Sepertinya kami tidak memiliki catatan apa pun. Rekaman Anda jalankan dengan mengklik "</string>
+    <string name="aktivitas_terakhir">Aktivitas Terakhir</string>
+    <string name="semua">Semua</string>
+    <string name="urutkan_berdasarkan">Urutkan Berdasarkan</string>
+    <string name="run_sort_order_date">Tanggal</string>
+    <string name="run_sort_order_duration">Durasi</string>
+    <string name="run_sort_order_calories_burned">Kalori Terbakar</string>
+    <string name="run_sort_order_avg_speed">Kecepatan Rata-Rata</string>
+    <string name="run_sort_order_distance">Jarak</string>
+    <string name="waktu_lari">Waktu Lari</string>
+    <string name="detail_makanan">Detail Makanan</string>
+    <string name="keluar">Keluar</string>
 </resources>

@@ -11,7 +11,7 @@ import com.mage.binasehat.data.model.Muscle
 
 object FakeData {
 
-    private val fakeMuscleData = listOf(
+    val fakeMuscleData = listOf(
         Muscle(id = 1, "Chest"),
         Muscle(id = 2, "Full Body"),
         Muscle(id = 3, "Legs"),
@@ -349,189 +349,173 @@ object FakeData {
 
     val fakeFoodData = listOf(
         Food(
-            foodId = 1,
-            name = "Nasi Goreng",
-            calories = 500,
+            foodId = 0,
+            name = "Roti",
+            calories = 265,  // Per 100g of white bread
             category = "Makanan",
-            sugar = 10,
-            protein = 20,
-            carb = 30,
-            fat = 5,
-            desc = "Nasi goreng dengan rempah-rempah pilihan",
-            photo = R.drawable.placeholder_image
+            sugar = 5.0f,  // grams
+            protein = 9.0f,  // grams
+            carb = 49.0f,  // grams
+            fat = 3.0f,  // grams
+            headline = "Kontrol asupan karbohidrat dan kalori dengan bahan dasar roti yang kaya energi",
+            desc = "Roti adalah makanan pokok yang terbuat dari tepung terigu, air, dan bahan pengembang. Biasanya digunakan untuk sarapan atau camilan.",
+            photo = R.drawable.roti
+        ),
+        Food(
+            foodId = 1,
+            name = "Telur",
+            calories = 155,  // Per large egg (50g)
+            category = "Makanan",
+            sugar = 1.1f,  // grams
+            protein = 13.0f,  // grams
+            carb = 1.1f,  // grams
+            fat = 10.6f,  // grams
+            headline = "Sumber protein hewani yang ideal untuk diet seimbang dan pemulihan otot",
+            desc = "Telur adalah sumber protein hewani yang kaya nutrisi. Dapat dimasak dengan berbagai cara, seperti digoreng, direbus, atau dibuat omelet.",
+            photo = R.drawable.telur
         ),
         Food(
             foodId = 2,
-            name = "Es Teh Manis",
-            calories = 50,
-            category = "Minuman",
-            sugar = 25,
-            protein = 0,
-            carb = 5,
-            fat = 0,
-            desc = "Es teh manis segar dengan pilihan rasa",
-            photo = R.drawable.placeholder_image
+            name = "Daging",
+            calories = 250,  // Per 100g of cooked lean beef
+            category = "Makanan",
+            sugar = 0.0f,  // grams
+            protein = 26.0f,  // grams
+            carb = 0.0f,  // grams
+            fat = 17.0f,  // grams
+            headline = "Daging sapi segar, sumber protein tinggi yang bisa disesuaikan dengan kebutuhan nutrisi harian",
+            desc = "Daging adalah sumber protein hewani yang juga kaya akan vitamin dan mineral. Bisa dipanggang, direbus, atau ditumis.",
+            photo = R.drawable.daging
         ),
         Food(
             foodId = 3,
-            name = "Spaghetti Bolognese",
-            calories = 600,
+            name = "Mie-Pasta",
+            calories = 371,  // Per 100g of cooked spaghetti
             category = "Makanan",
-            sugar = 15,
-            protein = 30,
-            carb = 45,
-            fat = 15,
-            desc = "Spaghetti dengan saus daging yang gurih",
-            photo = R.drawable.placeholder_image
+            sugar = 3.0f,  // grams
+            protein = 13.0f,  // grams
+            carb = 74.0f,  // grams
+            fat = 1.5f,  // grams
+            headline = "Pasta sebagai bahan utama kaya karbohidrat kompleks, sempurna untuk memberi energi",
+            desc = "Mie atau pasta adalah makanan berbahan dasar tepung yang digulung dan dipotong sesuai jenis. Dikenal dengan hidangan seperti spaghetti atau mie goreng.",
+            photo = R.drawable.pasta
         ),
         Food(
             foodId = 4,
-            name = "Sushi",
-            calories = 300,
+            name = "Nasi",
+            calories = 130,  // Per 100g of cooked white rice
             category = "Makanan",
-            sugar = 5,
-            protein = 15,
-            carb = 40,
-            fat = 10,
-            desc = "Sushi dengan ikan segar dan sayuran",
-            photo = R.drawable.placeholder_image
+            sugar = 0.0f,  // grams
+            protein = 2.7f,  // grams
+            carb = 28.0f,  // grams
+            fat = 0.3f,  // grams
+            headline = "Beras putih, bahan dasar karbohidrat utama yang memberi energi jangka panjang",
+            desc = "Nasi adalah sumber karbohidrat utama di banyak negara Asia, dibuat dengan cara memasak beras hingga matang. Biasanya disajikan sebagai pendamping makanan utama.",
+            photo = R.drawable.nasi
         ),
         Food(
             foodId = 5,
-            name = "Ayam Penyet",
-            calories = 450,
-            category = "Makanan",
-            sugar = 8,
-            protein = 25,
-            carb = 35,
-            fat = 20,
-            desc = "Ayam goreng penyet dengan sambal pedas",
-            photo = R.drawable.placeholder_image
+            name = "Apel",
+            calories = 52,  // Per 100g
+            category = "Buah",
+            sugar = 10.4f,  // grams
+            protein = 0.3f,  // grams
+            carb = 13.8f,  // grams
+            fat = 0.2f,  // grams
+            headline = "Apel segar, bahan alami yang kaya serat dan vitamin untuk camilan sehat",
+            desc = "Apel adalah buah segar yang kaya akan serat dan vitamin. Cocok untuk camilan sehat atau sebagai bahan tambahan dalam salad.",
+            photo = R.drawable.apel
         ),
         Food(
             foodId = 6,
-            name = "Rendang",
-            calories = 700,
-            category = "Makanan",
-            sugar = 7,
-            protein = 40,
-            carb = 20,
-            fat = 40,
-            desc = "Daging sapi yang dimasak dengan rempah-rempah",
-            photo = R.drawable.placeholder_image
+            name = "Pisang",
+            calories = 89,  // Per 100g
+            category = "Buah",
+            sugar = 12.2f,  // grams
+            protein = 1.1f,  // grams
+            carb = 22.8f,  // grams
+            fat = 0.3f,  // grams
+            headline = "Pisang matang, sumber kalium yang membantu keseimbangan elektrolit tubuh",
+            desc = "Pisang adalah buah tropis yang kaya kalium dan serat. Biasanya dikonsumsi langsung atau digunakan dalam smoothie.",
+            photo = R.drawable.pisang
         ),
         Food(
             foodId = 7,
-            name = "Kopi",
-            calories = 5,
-            category = "Minuman",
-            sugar = 0,
-            protein = 0,
-            carb = 1,
-            fat = 0,
-            desc = "Kopi hitam tanpa gula",
-            photo = R.drawable.placeholder_image
+            name = "Ceri",
+            calories = 50,  // Per 100g
+            category = "Buah",
+            sugar = 9.2f,  // grams
+            protein = 1.0f,  // gram
+            carb = 12.0f,  // grams
+            fat = 0.3f,  // grams
+            headline = "Ceri segar, bahan alami rendah kalori yang kaya antioksidan untuk kesehatan tubuh",
+            desc = "Ceri adalah buah kecil dengan rasa manis atau asam, sering digunakan dalam salad, kue, atau dimakan langsung.",
+            photo = R.drawable.ceri
         ),
         Food(
             foodId = 8,
-            name = "Pizza Margherita",
-            calories = 300,
-            category = "Makanan",
-            sugar = 5,
-            protein = 12,
-            carb = 36,
-            fat = 12,
-            desc = "Pizza dengan saus tomat dan keju mozzarella",
-            photo = R.drawable.placeholder_image
+            name = "Ciku",
+            calories = 83,  // Per 100g
+            category = "Buah",
+            sugar = 13.8f,  // grams
+            protein = 1.0f,  // gram
+            carb = 22.3f,  // grams
+            fat = 0.4f,  // grams
+            headline = "Ciku, bahan dasar tropis yang manis dan kaya serat, ideal untuk diet sehat",
+            desc = "Ciku, atau juga dikenal sebagai sapodilla, adalah buah tropis yang manis dan bertekstur lembut, sering ditemukan di pasar Asia.",
+            photo = R.drawable.ciku
         ),
         Food(
             foodId = 9,
-            name = "Pasta Aglio e Olio",
-            calories = 400,
-            category = "Makanan",
-            sugar = 2,
-            protein = 10,
-            carb = 60,
-            fat = 15,
-            desc = "Pasta dengan bawang putih dan minyak zaitun",
-            photo = R.drawable.placeholder_image
+            name = "Anggur",
+            calories = 69,  // Per 100g
+            category = "Buah",
+            sugar = 15.5f,  // grams
+            protein = 0.7f,  // gram
+            carb = 18.1f,  // grams
+            fat = 0.2f,  // grams
+            headline = "Anggur segar, bahan alami kaya antioksidan yang mendukung kesehatan tubuh",
+            desc = "Anggur adalah buah yang kaya antioksidan, sangat populer sebagai camilan atau dibuat jus.",
+            photo = R.drawable.anggur
         ),
         Food(
             foodId = 10,
-            name = "Tahu Tempe",
-            calories = 200,
+            name = "Sayur Campur",
+            calories = 80,  // Per 100g (general mixed vegetables)
             category = "Makanan",
-            sugar = 5,
-            protein = 15,
-            carb = 10,
-            fat = 10,
-            desc = "Tahu dan tempe goreng yang renyah",
-            photo = R.drawable.placeholder_image
+            sugar = 5.0f,  // grams
+            protein = 3.0f,  // grams
+            carb = 15.0f,  // grams
+            fat = 1.0f,  // gram
+            headline = "Sayuran campur segar, bahan utama yang kaya vitamin dan mineral untuk mendukung diet seimbang",
+            desc = "Sayur campur adalah kombinasi berbagai jenis sayuran yang dimasak bersama, memberikan berbagai macam vitamin dan mineral yang dibutuhkan tubuh.",
+            photo = R.drawable.sayur_campur
         ),
         Food(
             foodId = 11,
-            name = "Salad Buah",
-            calories = 150,
+            name = "Tahu",
+            calories = 76,  // Per 100g of firm tofu
             category = "Makanan",
-            sugar = 20,
-            protein = 2,
-            carb = 30,
-            fat = 1,
-            desc = "Campuran berbagai buah segar",
-            photo = R.drawable.placeholder_image
+            sugar = 0.7f,  // grams
+            protein = 8.0f,  // grams
+            carb = 1.9f,  // grams
+            fat = 4.8f,  // grams
+            headline = "Tahu, bahan nabati kaya protein dan serat, ideal untuk diet rendah kalori dan vegetarian",
+            desc = "Tahu adalah produk olahan kedelai yang kaya protein dan serat, sering digunakan dalam masakan Asia seperti tumis atau sebagai bahan makanan vegetarian.",
+            photo = R.drawable.tahu
         ),
         Food(
             foodId = 12,
-            name = "Teh Hijau",
-            calories = 0,
-            category = "Minuman",
-            sugar = 0,
-            protein = 0,
-            carb = 0,
-            fat = 0,
-            desc = "Teh hijau segar tanpa gula",
-            photo = R.drawable.placeholder_image
-        ),
-        Food(
-            foodId = 13,
-            name = "Bubur Ayam",
-            calories = 350,
+            name = "Tempe",
+            calories = 192,  // Per 100g
             category = "Makanan",
-            sugar = 3,
-            protein = 20,
-            carb = 50,
-            fat = 10,
-            desc = "Bubur nasi dengan ayam suwir dan kecap",
-            photo = R.drawable.placeholder_image
-        ),
-        Food(
-            foodId = 14,
-            name = "Kue Cubit",
-            calories = 250,
-            category = "Makanan",
-            sugar = 20,
-            protein = 5,
-            carb = 30,
-            fat = 8,
-            desc = "Kue manis berbahan dasar tepung dan gula",
-            photo = R.drawable.placeholder_image
-        ),
-        Food(
-            foodId = 15,
-            name = "Jus Jeruk",
-            calories = 120,
-            category = "Minuman",
-            sugar = 24,
-            protein = 2,
-            carb = 30,
-            fat = 0,
-            desc = "Jus segar dari jeruk pilihan",
-            photo = R.drawable.placeholder_image
+            sugar = 0.5f,  // grams
+            protein = 19.0f,  // grams
+            carb = 15.0f,  // grams
+            fat = 10.0f,  // grams
+            headline = "Tempe, sumber protein nabati fermentasi yang tinggi serat dan cocok untuk menu sehat sehari-hari",
+            desc = "Tempe adalah hasil fermentasi kedelai yang kaya akan protein dan serat, cocok dijadikan alternatif sumber protein nabati dalam makanan vegetarian.",
+            photo = R.drawable.tempe
         )
     )
-
-
-
-
-
 }

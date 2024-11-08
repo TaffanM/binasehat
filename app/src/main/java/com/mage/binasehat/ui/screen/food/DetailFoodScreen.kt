@@ -58,7 +58,7 @@ fun DetailFoodScreen(
         ) {
             // Food Image as background
             Image(
-                painter = painterResource(id = R.drawable.placeholder_image),
+                painter = painterResource(food.photo),
                 contentDescription = "Food Image",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -68,7 +68,7 @@ fun DetailFoodScreen(
 
             // Back button
             BackButton(
-                text = "Detail Makanan",
+                text = stringResource(R.string.list_makanan),
                 onClick = {
                     navController.popBackStack()
                 },
@@ -155,13 +155,13 @@ fun DetailFoodContent(
 
             // Description
             Text(
-                text = food.desc,
+                text = food.headline,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Indomie adalah merek mie instan yang sangat populer di Indonesia dan di banyak negara lainnya. Dikenal karena kepraktisannya dan rasa yang lezat, Indomie menawarkan solusi cepat dan enak untuk makanan sehari-hari...",
+                text = food.desc,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
