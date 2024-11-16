@@ -34,7 +34,12 @@ import com.mage.binasehat.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BodyStats() {
+fun BodyStats(
+    tallValue: String,
+    weighValue: String,
+    onTallChange: (String) -> Unit,
+    onWeighChange: (String) -> Unit
+) {
     var height by remember { mutableStateOf<Int?>(null) }
     var weight by remember { mutableStateOf<Int?>(null) }
 
@@ -72,7 +77,7 @@ fun BodyStats() {
         ) {
             HealthForm(
                 onClick = { showHeightPicker = true},
-                input = height?.toString() ?: "",
+                input = height?.toString() ?: tallValue,
                 placeholder = stringResource(R.string.tinggi),
                 icon = painterResource(R.drawable.rounded_height_24),
                 trailingText = "cm",
@@ -81,7 +86,7 @@ fun BodyStats() {
             )
             HealthForm(
                 onClick = { showWeightPicker = true},
-                input = weight?.toString() ?: "",
+                input = weight?.toString() ?: weighValue,
                 placeholder = stringResource(R.string.berat),
                 icon = painterResource(R.drawable.rounded_monitor_weight_24),
                 trailingText = "kg",
@@ -114,6 +119,7 @@ fun BodyStats() {
                     text = stringResource(R.string.simpan),
                     onClick = {
                         height = tempHeight
+                        onTallChange(height.toString())
                         showHeightPicker = false
                     }
                 )
@@ -146,6 +152,7 @@ fun BodyStats() {
                     text = stringResource(R.string.simpan),
                     onClick = {
                         weight = tempWeight
+                        onWeighChange(weight.toString())
                         showWeightPicker = false
                     }
                 )

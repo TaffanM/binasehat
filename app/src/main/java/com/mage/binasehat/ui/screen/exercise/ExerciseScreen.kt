@@ -78,7 +78,15 @@ fun ExerciseScreen(
                             shape = RoundedCornerShape(8.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-                            modifier = Modifier.fillMaxHeight()
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .clickable {
+                                    navController.navigate("workoutMainScreen") {
+                                        popUpTo("workoutMainScreen") {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize()
@@ -108,7 +116,7 @@ fun ExerciseScreen(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Text(
-                                            text = stringResource(R.string.olahraga),
+                                            text = stringResource(R.string.kebugaran),
                                             style = Typography.titleLarge.copy(color = Color.White),
                                         )
                                         Icon(

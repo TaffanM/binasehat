@@ -139,7 +139,7 @@ fun RunningMainScreen(
                     )
                     Spacer(modifier = Modifier.weight(1f)) // Pushes the content to the end
                     Text(
-                        text = stringResource(R.string.olahraga_lari),
+                        text = stringResource(R.string.lari),
                         style = MaterialTheme.typography.titleLarge.copy(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
@@ -216,7 +216,7 @@ fun RunningMainScreen(
                     RecentRunList(
                         runList = state.runList,
                         onItemClick = {
-                            navController.navigate("running_detail_screen/${it.id}")
+                            runViewModel.showRun(run = it)
                         },
                         modifier = Modifier.padding()
                     )

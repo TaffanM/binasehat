@@ -52,11 +52,6 @@ fun BottomBar(
                 icon = R.drawable.exercise,
                 route = "exercise"
             ),
-            NavigationItem(
-                title = stringResource(R.string.profil),
-                icon = if (currentRoute == "profile") R.drawable.account_active else R.drawable.account_inactive,
-                route = "profile"
-            )
         )
 
         navigationItems.map { item ->

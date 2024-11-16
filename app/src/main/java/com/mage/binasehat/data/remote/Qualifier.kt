@@ -8,6 +8,18 @@ annotation class MainNews
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class MlApi
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class UserApi
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class FoodApi
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class IoDispatcher
 
 @Retention(AnnotationRetention.RUNTIME)

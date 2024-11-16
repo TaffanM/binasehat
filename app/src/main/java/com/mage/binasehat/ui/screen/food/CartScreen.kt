@@ -283,7 +283,14 @@ fun CartScreen(
                 Spacer(modifier = Modifier.padding(4.dp))
 
                 CustomFillButton(
-                    onClick = { /* Handle Save action */ },
+                    onClick = {
+                        foodViewModel.submitFoodConsumption()
+                        navController.navigate("main"){
+                            popUpTo(navController.graph.id){
+                                inclusive = true
+                            }
+                        }
+                    },
                     text = stringResource(R.string.simpan),
 
                 )

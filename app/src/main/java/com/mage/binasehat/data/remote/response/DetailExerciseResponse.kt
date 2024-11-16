@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.mage.binasehat.data.model.Category
 import com.mage.binasehat.data.model.Muscle
 
-data class DetailExerciseResponse(
+data class DetailExerciseRespone(
 
     @field:SerializedName("code")
     val code: Int? = null,
@@ -69,7 +69,7 @@ data class DetailExercise(
     val calEstimation: Int? = null,
 
     @field:SerializedName("gif_url")
-    val gifUrl: String? = null,
+    val gifUrl: Int? = null,
 
     @field:SerializedName("is_support_interactive")
     val isSupportInteractive: Int? = null,
@@ -93,7 +93,7 @@ data class DetailExercise(
     val id: Int? = null,
 
     @field:SerializedName("photo_url")
-    val photoUrl: String? = null,
+    val photoUrl: Int? = null,
 
     @field:SerializedName("category")
     val category: Category? = null

@@ -1,46 +1,22 @@
 package com.mage.binasehat.ui.screen.form
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDefaults
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,38 +25,71 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.material3.MaterialTheme
 import com.mage.binasehat.R
 import com.mage.binasehat.ui.screen.components.BackButton
 import com.mage.binasehat.ui.screen.components.BirthEditText
 import com.mage.binasehat.ui.screen.components.BodyStats
 import com.mage.binasehat.ui.screen.components.CustomFillButton
-import com.mage.binasehat.ui.screen.components.CustomOutlinedButton
 import com.mage.binasehat.ui.screen.components.GenderOption
 import com.mage.binasehat.ui.screen.components.HeightPicker
 import com.mage.binasehat.ui.screen.components.LoadingDialog
 import com.mage.binasehat.ui.screen.components.SuccessDialog
-import com.mage.binasehat.ui.screen.components.WeightPicker
 import com.mage.binasehat.ui.theme.BinaSehatTheme
 import com.mage.binasehat.ui.theme.PlusJakartaSans
 import com.mage.binasehat.ui.theme.Typography
-import kotlinx.coroutines.delay
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.mage.binasehat.data.util.Result
 
 @Composable
 fun FormScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    userRegistrationViewModel: UserRegistrationViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(Unit) {
+        Log.d("FormScreen", "Username: ${userRegistrationViewModel.username.value}")
+        Log.d("FormScreen", "Email: ${userRegistrationViewModel.email.value}")
+        Log.d("FormScreen", "Password: ${userRegistrationViewModel.password.value}")
+    }
+
+    // Form input state
+    var birt by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("") }
+    var tall by remember { mutableStateOf("") }
+    var weigh by remember { mutableStateOf("") }
+
+    // Observe form submission state from the ViewModel
+    val formSubmissionState by userRegistrationViewModel.formSubmissionState.collectAsState()
     var showLoadingDialog by remember { mutableStateOf(false) }
     var showSuccessDialog by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
+
+    // Handle form submission state
+    when (formSubmissionState) {
+        is Result.Loading -> showLoadingDialog = true
+        is Result.Success -> {
+            showLoadingDialog = false
+            showSuccessDialog = true
+        }
+        is Result.Error -> {
+            showLoadingDialog = false
+            val errorMessage = (formSubmissionState as Result.Error).message
+            LaunchedEffect(Unit) {
+                Toast.makeText(
+                    context,
+                    "$errorMessage Internal Server Error, Try Again Later ",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        is Result.Idle -> { /* Do nothing */ }
+    }
+
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier
@@ -95,26 +104,49 @@ fun FormScreen(
                 }
             )
             FormTitleText()
-            BirthEditText()
-            GenderOption()
-            BodyStats()
+
+            // Bind inputs to ViewModel state
+            BirthEditText(value = birt, onValueChange = { birt = it })
+            GenderOption(value = gender, onValueChange = { gender = it })
+            BodyStats(
+                tallValue = tall,
+                weighValue = weigh,
+                onTallChange = { tall = it },
+                onWeighChange = { weigh = it }
+            )
+
+            // Form submission button
             CustomFillButton(
                 text = stringResource(R.string.kirim),
                 onClick = {
-                   showLoadingDialog = true
+                    Log.d("FormScreen", "Birth: $birt, Gender: $gender, Tall: $tall, Weigh: $weigh")
+
+                    // Check if all required fields are filled
+                    if (birt.isEmpty() || gender.isEmpty() || tall.isEmpty() || weigh.isEmpty()) {
+                        Toast.makeText(context, R.string.semua_field_diisi, Toast.LENGTH_SHORT).show()
+                        return@CustomFillButton
+                    }
+
+                    // Submit the form by calling the ViewModel's submitForm function
+                    userRegistrationViewModel.submitForm(
+                        birt = birt,
+                        gender = gender,
+                        tall = tall.toFloat(),
+                        weigh = weigh.toFloat()
+                    )
                 },
                 modifier = Modifier
             )
         }
 
+        // Loading dialog while the form is being submitted
         if (showLoadingDialog) {
             LoadingDialog(
-                onDismiss = {
-                    showLoadingDialog = false
-                }
+                onDismiss = { showLoadingDialog = false }
             )
         }
 
+        // Success dialog once the form is successfully submitted
         if (showSuccessDialog) {
             SuccessDialog(
                 onDismiss = {
@@ -127,15 +159,6 @@ fun FormScreen(
                 },
                 text = stringResource(R.string.sukses_daftar)
             )
-        }
-    }
-
-    LaunchedEffect(showLoadingDialog) {
-        if (showLoadingDialog) {
-            delay(5000)
-            showLoadingDialog = false
-            showSuccessDialog = true
-
         }
     }
 }

@@ -91,7 +91,7 @@
     <string name="sesi_saat_ini">Current Session</string>
     <string name="lari_sekarang">Run Now</string>
     <string name="belum_ada_sesi_lari">"It seems we have no records. You can start your run by clicking "</string>
-    <string name="aktivitas_terakhir">RecentActivity</string>
+    <string name="aktivitas_terakhir">Recent Activity</string>
     <string name="semua">All</string>
     <string name="urutkan_berdasarkan">Sort By</string>
     <string name="waktu_lari">Running Time</string>
@@ -101,6 +101,39 @@
     <string name="run_sort_order_avg_speed">Avg Speed</string>
     <string name="run_sort_order_distance">Distance</string>
     <string name="detail_makanan">Food Detail</string>
+    <string name="keluar">Logout</string>
+    <string name="password_tidak_sama">Passwords do not match. Please try again.</string>
+    <string name="semua_field_diisi">All fields must be filled</string>
+    <string name="katasandi_tidak_sama">Your password and password confirmation do not match</string>
+
+    <string name="section_favorite_title">Trending Workout Wonders!</string>
+    <string name="section_favorite_subtitle">Sculpt and energize with the latest fitness favorites!</string>
+    <string name="section_discover_title">Discover Your Fitness Playground</string>
+    <string name="section_discover_subtitle">Master basics with essential workouts for all levels</string>
+
+    <string name="empty_exercise_message">Data empty for now</string>
+    <string name="empty_schedule" >Looks like you haven`t mapped out your workout yet, let`s plan it together. Time to create an exciting exercise schedule! 💪✨</string>
+    <string name="error_message">"Something Wrong with server"</string>
+    <string name="loading_message">Loading"</string>
+    <string name="rating_format">%1$d%% Rate</string>
+    <string name="calori_format">%1$d Cal</string>
+    <string name="search_label">Search by gesture or tool</string>
+    <string name="start_interactive_text">Start Interactive Mode</string>
+
+    <string name="continue_with_google">Continue With Google</string>
+    <string name="search_equiment">Search Equiment by image</string>
+
+    <string name="total_exercise_count">%1$d exercise</string>
+    <string name="total_calori_count">%1$d calori</string>
+    <string name="notification_message_format">(%1$s - %2$s) %3$s</string>
+    <string name="kebugaran">Fitness</string>
+
+    <string name="list_kebugaran">Fitness List</string>
+    <string name="mulai_latihan_interaktif">Start Interactive Workout</string>
+    <string name="target_nutrisi">Nutrition Target</string>
+    <string name="jumlah_kalori">(2000 calories per day)</string>
+    <string name="kalori_masuk">Calories In</string>
+    <string name="kalori_keluar">Calories Out</string>
 
 
 

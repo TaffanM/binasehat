@@ -1,6 +1,7 @@
 package com.mage.binasehat.ui.screen.accountdetail
 
 import android.net.Uri
+import android.os.FileUtils
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,7 +26,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -39,6 +44,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.mage.binasehat.R
@@ -49,23 +55,46 @@ import com.mage.binasehat.ui.screen.components.CustomFillButton
 import com.mage.binasehat.ui.screen.components.GenderOption
 import com.mage.binasehat.ui.screen.components.TextField
 import com.mage.binasehat.ui.theme.BinaSehatTheme
+import com.mage.binasehat.ui.util.FileUtility
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 @Composable
 fun AccountDetailScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: AccountDetailViewModel = hiltViewModel()
 ) {
-    val imageUriState = remember { mutableStateOf<String?>(null) }
     val scrollState = rememberScrollState()
 
+    val userDetailResponse by viewModel.userDetailResponse.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+
+    val context = LocalContext.current
+
+
+    val imageUriState = remember { mutableStateOf<String?>(null) }
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
             uri?.let {
                 imageUriState.value = it.toString()
                 Log.d("AccountDetailScreen", "Selected image URI: $it")
+
+                // Create MultipartBody.Part using the utility
+                val part = FileUtility.createMultipartFromUri(context, it)
+
+                // Upload photo
+                viewModel.uploadPhoto(part)
             }
         }
     )
+
+    // Fetch user details when the screen is composed
+    LaunchedEffect(Unit) {
+        viewModel.fetchUserDetails()
+    }
 
     Box(
         modifier = Modifier
@@ -92,7 +121,8 @@ fun AccountDetailScreen(
                     .padding(horizontal = 16.dp,),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ProfileImage(imageUriState.value, onEditClick = {
+                val profileImageUrl = userDetailResponse?.userDetail?.photoUrl?.toString()
+                ProfileImage(imageUriState.value ?: profileImageUrl, onEditClick = {
                     galleryLauncher.launch("image/*")
                 })
                 Spacer(modifier = Modifier.padding(vertical = 16.dp))
@@ -107,64 +137,57 @@ fun AccountDetailScreen(
                         .fillMaxWidth()
                         .padding(bottom = 36.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(12.dp)
-                    ) {
-                        TextField(
-                            input = "Taffan",
-                            type = stringResource(R.string.nama),
-                            placeholder = stringResource(R.string.username_anda),
-                            onValueChange = {},
-                            focusRequester = remember { FocusRequester() },
-                            onDone = {},
-                            keyboardType = KeyboardType.Text
-                        )
-                        TextField(
-                            input = "",
-                            type = "Email",
-                            placeholder = stringResource(R.string.email_anda),
-                            onValueChange = {},
-                            focusRequester = remember { FocusRequester() },
-                            onDone = {},
-                            keyboardType = KeyboardType.Text
-                        )
-                        TextField(
-                            input = "",
-                            type = stringResource(R.string.katasandi_baru),
-                            placeholder = stringResource(R.string.masukkan_katasandi_baru),
-                            onValueChange = {},
-                            focusRequester = remember { FocusRequester() },
-                            onDone = {},
-                            keyboardType = KeyboardType.Text
-                        )
-                        TextField(
-                            input = "",
-                            type = stringResource(R.string.konfirmasi_katasandi_baru),
-                            placeholder = stringResource(R.string.konfirmasi_masukkan_katasandi_baru),
-                            onValueChange = {},
-                            focusRequester = remember { FocusRequester() },
-                            onDone = {},
-                            keyboardType = KeyboardType.Text
-                        )
-                        GenderOption()
-                        BirthEditText()
-                        BodyStats()
-                    }
+                    userDetailResponse?.let { response ->
+                        Column(
+                            modifier = Modifier
+                                .padding(12.dp)
+                        ) {
+                            val username = response.userDetail.username
+                            val email = response.userDetail.email
+                            TextField(
+                                input = username,
+                                type = stringResource(R.string.nama),
+                                placeholder = stringResource(R.string.username_anda),
+                                onValueChange = {},
+                                focusRequester = remember { FocusRequester() },
+                                onDone = {},
+                                keyboardType = KeyboardType.Text
+                            )
+                            TextField(
+                                input = email,
+                                type = "Email",
+                                placeholder = stringResource(R.string.email_anda),
+                                onValueChange = {},
+                                focusRequester = remember { FocusRequester() },
+                                onDone = {},
+                                keyboardType = KeyboardType.Text
+                            )
+                            GenderOption(
+                                value = response.userDetail.form.gender,
+                                onValueChange = {
 
+                                }
+                            )
+                            BirthEditText(
+                                value = response.userDetail.form.birt,
+                                onValueChange = {}
+                            )
+                            BodyStats(
+                                onTallChange = {
+                                    response.userDetail.form.tall
+                                },
+                                onWeighChange = {
+                                    response.userDetail.form.weigh
+                                },
+                                tallValue = response.userDetail.form.tall,
+                                weighValue = response.userDetail.form.weigh
+                            )
+                        }
+                    }
                 }
             }
 
         }
-        CustomFillButton(
-            text = stringResource(R.string.simpan),
-            onClick = {
-                navController.popBackStack()
-            },
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-        )
     }
 
 }

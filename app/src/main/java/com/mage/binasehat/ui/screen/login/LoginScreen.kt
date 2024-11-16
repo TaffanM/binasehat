@@ -1,5 +1,7 @@
 package com.mage.binasehat.ui.screen.login
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,10 +10,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,11 +36,14 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.mage.binasehat.R
+import com.mage.binasehat.data.util.Result
 import com.mage.binasehat.ui.screen.components.CustomFillButton
 import com.mage.binasehat.ui.screen.components.CustomOutlinedButton
+import com.mage.binasehat.ui.screen.components.LoadingDialog
 import com.mage.binasehat.ui.screen.components.PasswordTextField
 import com.mage.binasehat.ui.screen.components.TextField
 import com.mage.binasehat.ui.theme.BinaSehatTheme
@@ -41,7 +52,8 @@ import com.mage.binasehat.ui.theme.Typography
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
 
     var emailInput by remember { mutableStateOf("") }
@@ -51,6 +63,43 @@ fun LoginScreen(
     val passwordFocusRequester = remember { FocusRequester() }
 
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val loginResult by loginViewModel.loginResult.collectAsState()
+    var showLoadingDialog by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    when (loginResult) {
+        is Result.Loading -> {
+            showLoadingDialog = true
+
+        }
+        is Result.Success -> {
+            showLoadingDialog = false
+            LaunchedEffect(Unit) {
+                navController.navigate("main") {
+                    popUpTo(navController.graph.startDestinationId) {
+                        inclusive = true
+                    }
+                }
+            }
+        }
+        is Result.Error -> {
+            showLoadingDialog = false
+            val errorMessage = (loginResult as Result.Error).message
+            LaunchedEffect(Unit) {
+                Toast.makeText(
+                    context,
+                    "$errorMessage Internal Server Error, Try Again Later ",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            Log.d("LoginScreen", "Error: $errorMessage")
+        }
+        is Result.Idle -> {
+
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -98,11 +147,17 @@ fun LoginScreen(
             CustomOutlinedButton(
                 stringResource(R.string.login),
                 onClick = {
-                    navController.navigate("main") {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
-                        }
+                    if (emailInput.isEmpty() || passwordInput.isEmpty()) {
+                        Toast.makeText(context, R.string.semua_field_diisi, Toast.LENGTH_SHORT).show()
+                        return@CustomOutlinedButton
                     }
+
+                    loginViewModel.login(emailInput, passwordInput)
+//                    navController.navigate("main") {
+//                        popUpTo(navController.graph.startDestinationId) {
+//                            inclusive = true
+//                        }
+//                    }
                 },
                 modifier = Modifier.padding(top = 16.dp)
             )
@@ -117,6 +172,12 @@ fun LoginScreen(
                     }
                 },
                 modifier = Modifier
+            )
+        }
+
+        if (showLoadingDialog) {
+            LoadingDialog(
+                onDismiss = { showLoadingDialog = false }
             )
         }
     }

@@ -23,6 +23,8 @@ android {
         properties.load(project.rootProject.file("local.properties").inputStream())
         buildConfigField("String", "NEWS_API_KEY", "\"${properties.getProperty("NEWS_API_KEY")}\"")
         buildConfigField("String", "NEWS_BASE_URL", "\"https://newsapi.org/\"")
+        buildConfigField("String", "API_BASE_URL", "\"${properties.getProperty("API_BASE_URL")}\"")
+        buildConfigField("String", "ML_BASE_URL", "\"${properties.getProperty("ML_BASE_URL")}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -91,6 +93,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.service)
     implementation(libs.androidx.room.common)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.datastore.core.android)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.pose.detection.accurate)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.tv.material)
     implementation(libs.androidx.fragment.ktx)

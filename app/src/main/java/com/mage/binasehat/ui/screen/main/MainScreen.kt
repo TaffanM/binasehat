@@ -16,11 +16,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mage.binasehat.ui.screen.accountdetail.AccountDetailViewModel
 import com.mage.binasehat.ui.screen.components.BottomBar
 import com.mage.binasehat.ui.screen.dashboard.DashboardScreen
+import com.mage.binasehat.ui.screen.dashboard.DashboardViewModel
 import com.mage.binasehat.ui.screen.dashboard.NewsViewModel
 import com.mage.binasehat.ui.screen.exercise.ExerciseScreen
 import com.mage.binasehat.ui.screen.food.FoodScreen
+import com.mage.binasehat.ui.screen.food.FoodViewModel
 import com.mage.binasehat.ui.screen.profile.ProfileScreen
 import com.mage.binasehat.ui.screen.running.RunViewModel
 
@@ -28,6 +31,8 @@ import com.mage.binasehat.ui.screen.running.RunViewModel
 fun MainScreenWithBottomBar(
     navController: NavHostController,
     newsViewModel: NewsViewModel = hiltViewModel(),
+    dashboardViewModel: DashboardViewModel = hiltViewModel(),
+    foodViewModel: FoodViewModel = hiltViewModel()
 ) {
     val nestedNavController = rememberNavController()
     val currentRoute = nestedNavController.currentBackStackEntryAsState().value?.destination?.route ?: "home"
@@ -59,7 +64,7 @@ fun MainScreenWithBottomBar(
                         animationSpec = tween(100)
                     )
                 }
-            ) { DashboardScreen(navController, newsState) }
+            ) { DashboardScreen(navController, newsState, dashboardViewModel) }
             composable("food",
                 enterTransition = {
                     return@composable fadeIn(
@@ -71,7 +76,7 @@ fun MainScreenWithBottomBar(
                         animationSpec = tween(100)
                     )
                 }
-            ) { FoodScreen(navController) }
+            ) { FoodScreen(navController, foodViewModel, dashboardViewModel) }
             composable("exercise",
                 enterTransition = {
                     return@composable fadeIn(
@@ -84,19 +89,6 @@ fun MainScreenWithBottomBar(
                     )
                 }
             ) { ExerciseScreen(navController) }
-
-            composable("profile",
-                enterTransition = {
-                    return@composable fadeIn(
-                        animationSpec = tween(100)
-                    )
-                },
-                exitTransition = {
-                    return@composable fadeOut(
-                        animationSpec = tween(100)
-                    )
-                }
-            ) { ProfileScreen(navController) }
         }
     }
 }

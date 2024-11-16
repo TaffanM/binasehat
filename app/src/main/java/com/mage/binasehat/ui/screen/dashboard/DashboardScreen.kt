@@ -59,8 +59,10 @@ import androidx.tv.material3.Text
 import coil.compose.rememberAsyncImagePainter
 import com.mage.binasehat.R
 import com.mage.binasehat.data.remote.response.ArticlesItem
+import com.mage.binasehat.data.remote.response.DetailUserResponse
 import com.mage.binasehat.data.util.UiState
 import com.mage.binasehat.ui.model.NutritionItem
+import com.mage.binasehat.ui.screen.accountdetail.AccountDetailViewModel
 import com.mage.binasehat.ui.screen.accountdetail.ProfileImage
 import com.mage.binasehat.ui.screen.components.AppBar
 import com.mage.binasehat.ui.screen.components.DateSlider
@@ -74,11 +76,16 @@ import com.mage.binasehat.ui.util.TimeUtility
 fun DashboardScreen(
     navController: NavController,
     newsState: UiState<List<ArticlesItem>>,
-    viewModel: NewsViewModel = hiltViewModel()
+    dashboardViewModel: DashboardViewModel = hiltViewModel(),
+    viewModel: NewsViewModel = hiltViewModel(),
 ) {
-
+    val userDetailResponse by dashboardViewModel.userDetailResponse.collectAsState()
 
     val greeting = TimeUtility.getGreeting()
+
+    LaunchedEffect(Unit) {
+        dashboardViewModel.fetchUserDetails()
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize()
@@ -94,13 +101,17 @@ fun DashboardScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    ProfileImageDashboard("", modifier = Modifier.padding(start = 32.dp, end = 8.dp))
-                    Text(
-                        text = "Username",
-                        style = Typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    userDetailResponse?.let {
+                        ProfileImageDashboard(it.userDetail.photoUrl, modifier = Modifier.padding(start = 32.dp, end = 8.dp))
+
+                            Text(
+                                text = it.userDetail.username,
+                                style = Typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                    }
+
                 }
                 Text(
                     text = greeting,
@@ -110,11 +121,24 @@ fun DashboardScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.padding(vertical = 16.dp))
-                DateSlider(
-                    modifier = Modifier.padding(horizontal = 32.dp),
-                    onDateSelected = {}
-                )
-                NutritionBar()
+                Row(
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        text = stringResource(R.string.target_nutrisi),
+                        style = Typography.titleLarge,
+                        modifier = Modifier.padding(start = 32.dp),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = stringResource(R.string.jumlah_kalori),
+                        style = Typography.bodySmall,
+                        modifier = Modifier.padding(start = 4.dp),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                NutritionBar(userDetailResponse)
                 NewsRow(newsState, viewModel)
             }
         }
@@ -122,12 +146,14 @@ fun DashboardScreen(
 }
 
 @Composable
-fun NutritionBar() {
+fun NutritionBar(
+    userDetailResponse: DetailUserResponse?
+) {
     val nutritionData = listOf(
-        NutritionItem(stringResource(R.string.karbohidrat), 100, colorResource(R.color.dark_red)),
-        NutritionItem(stringResource(R.string.protein), 150, colorResource(R.color.dark_green)),
+        NutritionItem(stringResource(R.string.karbohidrat), 250, colorResource(R.color.dark_red)),
+        NutritionItem(stringResource(R.string.protein), 56, colorResource(R.color.dark_green)),
         NutritionItem(stringResource(R.string.lemak), 75, colorResource(R.color.dark_blue)),
-        NutritionItem(stringResource(R.string.gula), 35, colorResource(R.color.dark_yellow))
+        NutritionItem(stringResource(R.string.gula), 50, colorResource(R.color.dark_yellow))
     )
 
     val totalValue = nutritionData.sumOf { it.value }
@@ -149,7 +175,7 @@ fun NutritionBar() {
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "Kkal",
+                text = "gr",
                 style = Typography.titleMedium,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.padding(start = 2.dp),
@@ -230,36 +256,74 @@ fun NutritionBar() {
             Column(
                 modifier = Modifier
                     .padding(16.dp)
-
             ) {
-                Text(
-                    text = stringResource(R.string.kalori_masuk_keluar),
-                    style = Typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10))
-                        .background(Color.White)
-                        .padding(4.dp),
-
+                Column(
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "555.0",
-                        style = Typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = colorResource(R.color.green_primary),
-                        modifier = Modifier.padding(end = 4.dp)
-                    )
-                    Text(
-                        text = "Kkal",
-                        style = Typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = colorResource(R.color.green_primary),
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.kalori_masuk),
+                            style = Typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.padding(start = 8.dp))
+                        Row(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(10))
+                                .background(Color.White)
+                                .padding(4.dp),
+                        ) {
+                            Text(
+                                text = userDetailResponse?.userDetail?.dailyCaloriesIn.toString(),
+                                style = Typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = colorResource(R.color.green_primary),
+                                modifier = Modifier.padding(end = 4.dp)
+                            )
+                            Text(
+                                text = "Kkal",
+                                style = Typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = colorResource(R.color.green_primary),
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                    Row {
+                        Text(
+                            text = stringResource(R.string.kalori_keluar),
+                            style = Typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.padding(start = 8.dp))
+                        Row(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(10))
+                                .background(Color.White)
+                                .padding(4.dp),
+                        ) {
+                            Text(
+                                text = userDetailResponse?.userDetail?.dailyCaloriesOut.toString(),
+                                style = Typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = colorResource(R.color.green_primary),
+                                modifier = Modifier.padding(end = 4.dp)
+                            )
+                            Text(
+                                text = "Kkal",
+                                style = Typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = colorResource(R.color.green_primary),
+                            )
+                        }
+                    }
                 }
+
             }
         }
 
@@ -268,7 +332,7 @@ fun NutritionBar() {
 
 @Composable
 fun ProfileImageDashboard(
-    imageUrl: String?,
+    imageUrl: Any?,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -279,7 +343,7 @@ fun ProfileImageDashboard(
         // Profile image
         val placeholder = painterResource(id = R.drawable.placeholder_image)
         val painter = rememberAsyncImagePainter(
-            model = imageUrl,
+            model = imageUrl as? String ?: "",
             placeholder = placeholder,
             error = placeholder,
             fallback = placeholder,

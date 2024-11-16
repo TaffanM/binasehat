@@ -102,4 +102,37 @@
     <string name="waktu_lari">Waktu Lari</string>
     <string name="detail_makanan">Detail Makanan</string>
     <string name="keluar">Keluar</string>
+    <string name="password_tidak_sama">Password Tidak Sama. Mohon Coba Lagi</string>
+    <string name="semua_field_diisi">Semua kolom harus diisi</string>
+    <string name="katasandi_tidak_sama">Kata sandi Anda dan kata sandi konfirmasi anda tidak cocok</string>
+
+    <string name="section_favorite_title">Latihan Terfavorit yang Sedang Tren!</string>
+    <string name="section_favorite_subtitle">Bentuk dan tingkatkan energi dengan latihan favorit terbaru!</string>
+    <string name="section_discover_title">Temukan Tempat Bermain Fitness Anda</string>
+    <string name="section_discover_subtitle">Kuasi dasar dengan latihan penting untuk semua level</string>
+
+    <string name="empty_exercise_message">Data kosong untuk saat ini</string>
+    <string name="empty_schedule">Sepertinya Anda belum menyusun jadwal latihan, mari kita buat bersama. Saatnya merencanakan jadwal latihan yang menyenangkan! 💪✨</string>
+    <string name="error_message">"Terjadi Kesalahan dengan server"</string>
+    <string name="loading_message">Memuat</string>
+    <string name="rating_format">%1$d%% Rating</string>
+    <string name="calori_format">%1$d Kalori</string>
+    <string name="search_label">Cari dengan gestur atau alat</string>
+    <string name="start_interactive_text">Mulai Mode Interaktif</string>
+
+    <string name="continue_with_google">Lanjutkan Dengan Google</string>
+    <string name="search_equiment">Cari Alat dengan Gambar</string>
+
+    <string name="total_exercise_count">%1$d latihan</string>
+    <string name="total_calori_count">%1$d kalori</string>
+    <string name="notification_message_format">(%1$s - %2$s) %3$s</string>
+
+    <string name="kebugaran">Kebugaran</string>
+    <string name="list_kebugaran">List Kebugaran</string>
+    <string name="mulai_latihan_interaktif">Mulai Latihan Interaktif</string>
+    <string name="target_nutrisi">Target Nutrisi</string>
+    <string name="jumlah_kalori">(2000 kalori per hari)</string>
+    <string name="kalori_masuk">Kalori Masuk</string>
+    <string name="kalori_keluar">Kalori Keluar</string>
+
 </resources>

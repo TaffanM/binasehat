@@ -6,6 +6,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.Image
@@ -26,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +43,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.tv.material3.Text
@@ -48,17 +53,21 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.mage.binasehat.R
 import com.mage.binasehat.ui.screen.components.BackButton
 import com.mage.binasehat.ui.screen.components.CameraX
+import com.mage.binasehat.ui.screen.components.LoadingDialog
 import com.mage.binasehat.ui.theme.BinaSehatTheme
 import com.mage.binasehat.ui.theme.Typography
+import com.mage.binasehat.ui.util.ImageUtility
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.io.File
 
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ScanScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: FoodPredictViewModel = hiltViewModel()
 ) {
 
     val context = LocalContext.current
@@ -67,6 +76,7 @@ fun ScanScreen(
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(Manifest.permission.CAMERA)
     )
+    var showLoadingDialog by remember { mutableStateOf(false) }
 
 
     val controller = remember {
@@ -76,6 +86,20 @@ fun ScanScreen(
                         CameraController.VIDEO_CAPTURE
             )
         }
+    }
+
+    // Create a temporary file for the photo
+    val photoFile = remember {
+        File(
+            context.cacheDir,
+            "photo_${System.currentTimeMillis()}.jpg"
+        )
+    }
+
+    // Configure image capture options
+    val imageOptions = remember {
+        ImageCapture.OutputFileOptions.Builder(photoFile)
+            .build()
     }
 
     DisposableEffect(navController) {
@@ -90,6 +114,14 @@ fun ScanScreen(
             uri?.let {
                 imageUriState.value = it.toString()
                 Log.d("AccountDetailScreen", "Selected image URI: $it")
+                val image = ImageUtility.uriToFile(uri, context)
+                if (image != null) {
+                    viewModel.predictImage(image)
+                    showLoadingDialog = true
+                    navController.navigate("cart")
+                } else {
+                    Log.e("AccountDetailScreen", "Failed to convert URI to File")
+                }
             }
         }
     )
@@ -222,6 +254,7 @@ fun ScanScreen(
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     IconButton(onClick = {
+                        showLoadingDialog = true
                         galleryLauncher.launch("image/*")
                     }) {
                         Icon(
@@ -231,7 +264,30 @@ fun ScanScreen(
                         )
                     }
                     IconButton(onClick = {
-                        // Your camera click logic here
+                        showLoadingDialog = true
+                        controller.takePicture(
+                            imageOptions,
+                            ContextCompat.getMainExecutor(context),
+                            object : ImageCapture.OnImageSavedCallback {
+                                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                                    Log.d("ScanScreen", "Image saved successfully")
+                                    viewModel.predictImage(photoFile)
+                                    navController.navigate("cart")
+                                }
+
+                                override fun onError(exception: ImageCaptureException) {
+                                    Log.e("ScanScreen", "Photo capture failed: ${exception.message}", exception)
+                                    showLoadingDialog = false
+                                    Toast.makeText(
+                                        context,
+                                        "Failed to capture photo: ${exception.message}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                            }
+                        )
+
                     }) {
                         Icon(
                             painter = painterResource(R.drawable.round_photo_camera_24),
@@ -244,6 +300,19 @@ fun ScanScreen(
         }
     } else {
         Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+    }
+
+    if (showLoadingDialog) {
+        LoadingDialog(
+            onDismiss = { showLoadingDialog = false }
+        )
+    }
+
+    val predictionResult by viewModel.predictResult.collectAsState()
+    predictionResult.let {
+        // Display the prediction result (e.g., show the food name)
+        Log.d("ScanScreen", "Prediction Result: $it")
+        showLoadingDialog = false
     }
 }
 

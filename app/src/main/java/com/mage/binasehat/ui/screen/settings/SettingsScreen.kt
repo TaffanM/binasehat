@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,16 +39,19 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mage.binasehat.R
 import com.mage.binasehat.ui.screen.components.BackButton
 import com.mage.binasehat.ui.screen.components.LanguageDialog
+import com.mage.binasehat.ui.screen.login.LoginViewModel
 import com.mage.binasehat.ui.theme.Typography
 import com.mage.binasehat.ui.util.UserPreferences
 
 @Composable
 fun SettingsScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     var showDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -151,6 +155,7 @@ fun SettingsScreen(
             LogoutButton(
                 text = stringResource(R.string.keluar),
                 onClick = {
+                    viewModel.logout()
                     navController.navigate("login") {
                         popUpTo(navController.graph.startDestinationId) {
                             inclusive = true
@@ -223,7 +228,8 @@ fun DarkModeOption(
     onToggle: (Boolean) -> Unit,
     initialChecked: Boolean
 ) {
-    var checked by remember { mutableStateOf(initialChecked) }
+    // Use rememberSaveable to preserve the state across recompositions
+    var checked by rememberSaveable { mutableStateOf(initialChecked) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,

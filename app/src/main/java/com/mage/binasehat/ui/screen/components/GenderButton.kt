@@ -32,7 +32,10 @@ import com.mage.binasehat.R
 import com.mage.binasehat.ui.theme.Typography
 
 @Composable
-fun GenderOption() {
+fun GenderOption(
+    value: String,
+    onValueChange: (String) -> Unit
+) {
     var selectedGender by remember { mutableStateOf("") }
 
     Column(
@@ -55,8 +58,8 @@ fun GenderOption() {
             GenderButton(
                 text = stringResource(R.string.laki_laki),
                 icon = painterResource(R.drawable.baseline_male_24),
-                isSelected = selectedGender == "male",
-                onClick = { selectedGender = "male" },
+                isSelected = value == "Male",
+                onClick = { onValueChange("Male") },
                 genderType = GenderType.MALE,
                 modifier = Modifier.weight(1f)
             )
@@ -64,8 +67,8 @@ fun GenderOption() {
             GenderButton(
                 text = stringResource(R.string.perempuan),
                 icon = painterResource(R.drawable.baseline_female_24),
-                isSelected = selectedGender == "female",
-                onClick = { selectedGender = "female" },
+                isSelected = value == "Female",
+                onClick = { onValueChange("Female") },
                 genderType = GenderType.FEMALE,
                 modifier = Modifier.weight(1f)
             )

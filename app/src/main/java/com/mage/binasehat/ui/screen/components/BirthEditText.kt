@@ -37,7 +37,10 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BirthEditText() {
+fun BirthEditText(
+    value: String,
+    onValueChange: (String) -> Unit
+) {
     var selectedDate by remember { mutableStateOf("") }
     var openDialog by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
@@ -55,8 +58,10 @@ fun BirthEditText() {
             modifier = Modifier.padding(bottom = 8.dp)
         )
         OutlinedTextField(
-            value = selectedDate,
-            onValueChange = {},
+            value = value,
+            onValueChange = {
+                onValueChange(it)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
@@ -98,7 +103,7 @@ fun BirthEditText() {
                             datePickerState.selectedDateMillis?.let { millis ->
                                 val date = Date(millis)
                                 val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                                selectedDate = formatter.format(date)
+                                onValueChange(formatter.format(date))
                             }
                             openDialog = false
                         },

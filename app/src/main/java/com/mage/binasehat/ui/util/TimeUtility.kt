@@ -3,7 +3,10 @@ package com.mage.binasehat.ui.util
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.mage.binasehat.R
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 object TimeUtility {
@@ -40,5 +43,17 @@ object TimeUtility {
             formattedString + ":" +
                     "${if (milliseconds < 10) "0" else ""}$milliseconds"
         }
+    }
+
+    fun getCustomTimeForToday(hour: Int, minute: Int, second: Int): String {
+        val customTime = LocalDateTime.now()
+            .withHour(hour)
+            .withMinute(minute)
+            .withSecond(second)
+            .withNano(0)
+
+        // Format it as an ISO-8601 string (e.g., "2024-11-10T12:00:00Z")
+        return customTime.atZone(ZoneId.systemDefault())
+            .format(DateTimeFormatter.ISO_INSTANT)
     }
 }
