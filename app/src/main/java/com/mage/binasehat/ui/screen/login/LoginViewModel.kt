@@ -9,6 +9,7 @@ import com.mage.binasehat.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 import kotlin.math.log
 
@@ -26,11 +27,28 @@ class LoginViewModel @Inject constructor(
                 val loginRequest = LoginRequest(email, password)
                 val response = userRepository.login(loginRequest)
                 _loginResult.value = Result.Success(response)
+            } catch (e: HttpException) {
+                // Handle HTTP-specific exceptions like 401
+                val errorMessage = try {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    if (!errorBody.isNullOrEmpty()) {
+                        errorBody
+                    } else {
+                        "An error occurred"
+                    }
+                } catch (jsonException: Exception) {
+                    "An error occurred while processing the error response"
+                }
+                // Log and handle the error gracefully
+                _loginResult.value = Result.Error(errorMessage)
             } catch (e: Exception) {
-                _loginResult.value = Result.Error(e.message ?: "An error occurred")
+                // Catch other types of exceptions (e.g., network errors)
+                val errorMessage = e.message ?: "An unexpected error occurred"
+                _loginResult.value = Result.Error(errorMessage)
             }
         }
     }
+
 
     fun logout() {
         viewModelScope.launch {

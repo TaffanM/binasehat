@@ -31,10 +31,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -203,7 +205,10 @@ fun NutritionBar(
 
         Column(
             modifier = Modifier
-                .border(border = BorderStroke(1.dp, colorResource(R.color.gray_300)), shape = RoundedCornerShape(10))
+                .border(
+                    border = BorderStroke(1.dp, colorResource(R.color.gray_300)),
+                    shape = RoundedCornerShape(10)
+                )
                 .padding(8.dp)
         ) {
             nutritionData.forEachIndexed {index, item ->
@@ -243,23 +248,27 @@ fun NutritionBar(
             }
         }
         Card(
-            modifier = Modifier.padding(top = 24.dp)
+            modifier = Modifier
+                .padding(vertical = 16.dp)
                 .fillMaxWidth(),
-            colors = CardColors(
-                containerColor = colorResource(R.color.green_primary),
-                contentColor = Color.White,
-                disabledContainerColor = colorResource(R.color.green_primary),
-                disabledContentColor = Color.White
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onSurface
             ),
-            elevation = CardDefaults.elevatedCardElevation()
+            elevation = CardDefaults.elevatedCardElevation(),
+            border = BorderStroke(1.dp, colorResource(R.color.gray_300))
         ) {
-            Column(
+            Row(
                 modifier = Modifier
                     .padding(16.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(modifier = Modifier.height(8.dp))
+                // Left Section: Kalori Masuk
                 Column(
-                    verticalArrangement = Arrangement.SpaceBetween
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -268,62 +277,65 @@ fun NutritionBar(
                             text = stringResource(R.string.kalori_masuk),
                             style = Typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.padding(start = 8.dp))
-                        Row(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(10))
-                                .background(Color.White)
-                                .padding(4.dp),
-                        ) {
-                            Text(
-                                text = userDetailResponse?.userDetail?.dailyCaloriesIn.toString(),
-                                style = Typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = colorResource(R.color.green_primary),
-                                modifier = Modifier.padding(end = 4.dp)
-                            )
-                            Text(
-                                text = "Kkal",
-                                style = Typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = colorResource(R.color.green_primary),
-                            )
-                        }
+                        Spacer(modifier = Modifier.width(2.dp))
+                        Icon(
+                            painter =  painterResource(R.drawable.rounded_arrow_downward_24),
+                            contentDescription = "Edit",
+                            tint = colorResource(R.color.green_primary),
+                            modifier = Modifier.size(16.dp)
+                        )
                     }
-                    Spacer(modifier = Modifier.padding(vertical = 8.dp))
-                    Row {
+
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "${userDetailResponse?.userDetail?.dailyCaloriesIn ?: 0.0} kcal",
+                        style = Typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = colorResource(R.color.green_primary)
+                    )
+                }
+
+                // Divider
+                VerticalDivider(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    modifier = Modifier
+                        .height(56.dp)
+                        .width(1.dp)
+                )
+
+                // Right Section: Kalori Keluar
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(
                             text = stringResource(R.string.kalori_keluar),
                             style = Typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.padding(start = 8.dp))
-                        Row(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(10))
-                                .background(Color.White)
-                                .padding(4.dp),
-                        ) {
-                            Text(
-                                text = userDetailResponse?.userDetail?.dailyCaloriesOut.toString(),
-                                style = Typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = colorResource(R.color.green_primary),
-                                modifier = Modifier.padding(end = 4.dp)
-                            )
-                            Text(
-                                text = "Kkal",
-                                style = Typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = colorResource(R.color.green_primary),
-                            )
-                        }
+                        Spacer(modifier = Modifier.width(2.dp))
+                        Icon(
+                            painter =  painterResource(R.drawable.rounded_arrow_upward_24),
+                            contentDescription = "Edit",
+                            tint = Color.Red,
+                            modifier = Modifier.size(16.dp)
+                        )
                     }
-                }
 
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "${userDetailResponse?.userDetail?.dailyCaloriesOut ?: 0} kcal",
+                        style = Typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = colorResource(R.color.green_primary),
+                    )
+                }
             }
         }
 

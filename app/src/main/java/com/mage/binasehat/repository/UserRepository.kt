@@ -1,15 +1,13 @@
 package com.mage.binasehat.repository
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.mage.binasehat.data.remote.api.UserApiService
 import com.mage.binasehat.data.remote.model.FormSubmissionRequest
 import com.mage.binasehat.data.remote.model.LoginRequest
 import com.mage.binasehat.data.remote.model.RegisterRequest
 import com.mage.binasehat.data.remote.response.DetailUserResponse
-import com.mage.binasehat.data.remote.response.FormResponse
 import com.mage.binasehat.data.remote.response.LoginResponse
 import com.mage.binasehat.data.remote.response.RegisterResponse
 import com.mage.binasehat.data.remote.response.UploadResponse
@@ -18,8 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
-import retrofit2.Response
-import java.util.prefs.Preferences
 import javax.inject.Inject
 
 

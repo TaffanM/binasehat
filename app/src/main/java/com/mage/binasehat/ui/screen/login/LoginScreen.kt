@@ -90,7 +90,7 @@ fun LoginScreen(
             LaunchedEffect(Unit) {
                 Toast.makeText(
                     context,
-                    "$errorMessage Internal Server Error, Try Again Later ",
+                    errorMessage,
                     Toast.LENGTH_SHORT
                 ).show()
             }

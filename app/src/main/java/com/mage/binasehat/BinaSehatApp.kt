@@ -69,19 +69,6 @@ fun BinaSehatApp(
     // This holds the state of the app
     val runningState by runningViewModel.runningMainScreenState.collectAsState()
 
-    // After Onboarding - Token Check Logic
-    LaunchedEffect(Unit) {
-        val token = userRepository.getUserToken() // This checks if the token exists
-        if (token != null) {
-            // If token exists, navigate to MainScreen
-            navController.navigate("main") {
-                popUpTo("onboarding") { inclusive = true }
-            }
-        } else {
-            // If no token, navigate to LoginScreen
-            navController.navigate("login")
-        }
-    }
 
     NavHost(
         navController = navController,

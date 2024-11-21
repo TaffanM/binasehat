@@ -119,10 +119,19 @@ fun InteractiveLearnScreen(
         is Result.Success<*> -> {
             val data = (exerciseState as Result.Success<DetailExerciseRespone>).data
 
-            viewModel.initialateCounter(
-                data.data?.id?.toLong(),
-                data.data?.interactiveSetting?.repetition, data.data?.interactiveSetting?.set
-            )
+            // Safe check for null data
+            val exerciseData = data.data
+            if (exerciseData != null) {
+                viewModel.initialateCounter(
+                    exerciseData.id?.toLong(),
+                    exerciseData.interactiveSetting?.repetition,
+                    exerciseData.interactiveSetting?.set
+                )
+            } else {
+                // Handle the case where exercise data is null (optional error UI)
+                Text("Error: Exercise data is missing")
+                Log.d("InteractiveLearnScreen", "exerciseState: $exerciseState")
+            }
             when (configuration.orientation) {
                 Configuration.ORIENTATION_LANDSCAPE -> {
                     Row {

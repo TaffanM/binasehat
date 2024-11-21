@@ -26,6 +26,7 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,6 +55,7 @@ import com.mage.binasehat.ui.screen.dashboard.DashboardViewModel
 import com.mage.binasehat.ui.screen.dashboard.SettingsButtonLayout
 import com.mage.binasehat.ui.theme.PlusJakartaSans
 import com.mage.binasehat.ui.theme.Typography
+import java.time.LocalDate
 
 @Composable
 fun FoodScreen(
@@ -74,6 +76,11 @@ fun FoodScreen(
     val errorMessage by foodViewModel.errorMessage.collectAsState()
 
     val userDetailResponse by dashboardViewModel.userDetailResponse.collectAsState()
+
+    LaunchedEffect(Unit) {
+        val currentDate = LocalDate.now().toString()
+        foodViewModel.getFoodHistory(date = currentDate)
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
