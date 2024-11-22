@@ -96,7 +96,8 @@ fun DashboardScreen(
     }
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(top = 16.dp)
     ) {
         stickyHeader {
             AppBar(navController)

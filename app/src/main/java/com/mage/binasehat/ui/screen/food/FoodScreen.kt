@@ -3,6 +3,7 @@ package com.mage.binasehat.ui.screen.food
 import android.util.Log
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -65,6 +66,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FoodScreen(
     navController: NavController,
@@ -83,7 +85,6 @@ fun FoodScreen(
     val loading by foodViewModel.loading.collectAsState()
     val errorMessage by foodViewModel.errorMessage.collectAsState()
 
-    val userDetailResponse by dashboardViewModel.userDetailResponse.collectAsState()
     val selectedDate = remember { mutableStateOf(LocalDate.now().toString()) }
 
     LaunchedEffect(Unit) {
@@ -99,6 +100,9 @@ fun FoodScreen(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(top = 16.dp, bottom = 80.dp)
         ) {
+            stickyHeader {
+                AppBar(navController)
+            }
             // Add header item before the list
             item {
                 Column(
