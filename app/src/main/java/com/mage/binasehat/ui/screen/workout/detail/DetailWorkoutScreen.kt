@@ -262,7 +262,7 @@ fun GifImage(
         contentScale = ContentScale.Fit,
         modifier = modifier
             .fillMaxWidth()
-            .height(300.dp)
+            .height(200.dp)
     )
 }
 
@@ -279,7 +279,7 @@ fun WorkoutTutorial(
         // Tab Row
         TabRow(
             selectedTabIndex = selectedTabIndex,
-            contentColor = Color.White,
+            contentColor = MaterialTheme.colorScheme.onSurface,
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
                     color = MaterialTheme.colorScheme.primary,
@@ -336,7 +336,7 @@ fun WorkoutInformationTab(exercise: DetailExercise) {
         // Tab Row
         TabRow(
             selectedTabIndex = selectedTabIndex,
-            contentColor = Color.White,
+            contentColor = MaterialTheme.colorScheme.onSurface,
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
                     color = MaterialTheme.colorScheme.primary,

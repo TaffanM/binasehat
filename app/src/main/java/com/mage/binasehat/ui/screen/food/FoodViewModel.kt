@@ -23,7 +23,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -93,6 +100,11 @@ class FoodViewModel @Inject constructor(
         }
     }
 
+    private fun resetCart() {
+        _cartItems.value = emptyList()  // Reset the cart items to an empty list
+        Log.d("FoodViewModel", "Cart reset after food consumption submission.")
+    }
+
 
     fun submitFoodConsumption() {
         viewModelScope.launch {
@@ -102,18 +114,23 @@ class FoodViewModel @Inject constructor(
 
                 if (authToken != null) {
                     val requests = _cartItems.value.map { cartItem ->
-                        val consumedAt = Instant.now()
-                            .atZone(java.time.ZoneId.systemDefault())
-                            .format(DateTimeFormatter.ISO_INSTANT)
+                        val consumedAt = LocalDateTime.now()  // Uses system default timezone
+                            .atZone(ZoneId.systemDefault())  // Explicitly set to system default zone
+                            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                        Log.d("FoodViewModel", "date: $consumedAt")
                         FoodConsumptionRequest(
                             food_id = cartItem.food.foodId,
                             portion = cartItem.quantity.toFloat(),
                             consumed_at = consumedAt
                         )
+
                     }
+                    Log.d("FoodViewModel", "Submitting food consumption requests: $requests")
 
                     // Submit the food consumption requests via the repository
                     foodRepository.submitFoodConsumption("Bearer $authToken", requests)
+
+                    resetCart()
 
                 } else {
                     // Handle case where token is null (e.g., show login prompt)
@@ -139,6 +156,7 @@ class FoodViewModel @Inject constructor(
                 if (authToken != null) {
                     // Fetch the food history from the repository
                     val response = foodRepository.getFoodHistory(authToken, date)
+                    Log.d("FoodViewModel", "Date: $date")
                     if (response != null) {
                         _foodHistory.value = response  // Set the response to foodHistory
                     } else {

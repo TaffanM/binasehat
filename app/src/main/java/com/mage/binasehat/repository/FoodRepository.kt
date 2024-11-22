@@ -34,6 +34,8 @@ class FoodRepository @Inject constructor(
         try {
             // Make the API request to fetch the food history
             val response = foodApiService.getFoodHistory("Bearer $authToken", date)
+            Log.d("FoodRepository", "API Response: $response")
+            Log.d("FoodRepository", "Date: ${date}")
 
             if (response.isSuccessful) {
                 return response.body()  // Return the response body if successful

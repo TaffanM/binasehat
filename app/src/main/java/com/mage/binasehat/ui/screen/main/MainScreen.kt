@@ -64,7 +64,7 @@ fun MainScreenWithBottomBar(
                         animationSpec = tween(100)
                     )
                 }
-            ) { DashboardScreen(navController, newsState, dashboardViewModel) }
+            ) { DashboardScreen(navController, newsState, dashboardViewModel, newsViewModel, foodViewModel) }
             composable("food",
                 enterTransition = {
                     return@composable fadeIn(

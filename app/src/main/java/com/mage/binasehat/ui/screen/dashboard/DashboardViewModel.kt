@@ -23,6 +23,8 @@ class DashboardViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    private var originalUserDetail: DetailUserResponse? = null
+
     // Fetch the user details when the screen is initialized
     fun fetchUserDetails() {
         viewModelScope.launch {
@@ -31,6 +33,7 @@ class DashboardViewModel @Inject constructor(
                 _isLoading.value = true
                 try {
                     val response = userRepository.getDetailUser(authToken)
+                    originalUserDetail = response
                     _userDetailResponse.value = response
                 } catch (e: Exception) {
                     // Handle error (e.g., network failure)
@@ -40,5 +43,12 @@ class DashboardViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun filterDailyCaloriesByDate(date: String) {
+        val filteredResponse = originalUserDetail?.let {
+            if (it.userDetail.lastCaloriesUpdateDate == date) it else null
+        }
+        _userDetailResponse.value = filteredResponse
     }
 }

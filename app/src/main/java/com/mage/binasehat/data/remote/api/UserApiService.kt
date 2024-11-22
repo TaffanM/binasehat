@@ -3,10 +3,12 @@ package com.mage.binasehat.data.remote.api
 import com.mage.binasehat.data.remote.model.FormSubmissionRequest
 import com.mage.binasehat.data.remote.model.LoginRequest
 import com.mage.binasehat.data.remote.model.RegisterRequest
+import com.mage.binasehat.data.remote.model.RunSubmissionRequest
 import com.mage.binasehat.data.remote.response.DetailUserResponse
 import com.mage.binasehat.data.remote.response.FormResponse
 import com.mage.binasehat.data.remote.response.LoginResponse
 import com.mage.binasehat.data.remote.response.RegisterResponse
+import com.mage.binasehat.data.remote.response.RunningResponse
 import com.mage.binasehat.data.remote.response.UploadResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -52,6 +54,11 @@ interface UserApiService {
         @Header("Authorization") authToken: String,
     ) : DetailUserResponse
 
+    @POST("/run")
+    suspend fun submitRun(
+        @Header("Authorization") authToken: String,
+        @Body runSubmissionRequest: RunSubmissionRequest
+    ): RunningResponse
 
 
 

@@ -4,15 +4,21 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.mage.binasehat.data.local.db.dao.RunDao
 import com.mage.binasehat.data.model.Run
+import com.mage.binasehat.data.remote.api.UserApiService
+import com.mage.binasehat.data.remote.model.RunSubmissionRequest
+import com.mage.binasehat.data.remote.response.RunningResponse
 import com.mage.binasehat.data.util.RunSortOrder
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RunRepository @Inject constructor(
-    private val runDao: RunDao
+    private val runDao: RunDao,
+    private val userApiService: UserApiService,
+    private val userRepository: UserRepository
 ) {
     suspend fun insertRun(run: Run) = runDao.insertRun(run)
 
@@ -33,7 +39,8 @@ class RunRepository @Inject constructor(
     suspend fun getRunStatsInDateRange(fromDate: Date?, toDate: Date?) =
         runDao.getRunStatsInDateRange(fromDate, toDate)
 
-    fun getRunByDescDateWithLimit(limit: Int) = runDao.getRunByDescDateWithLimit(limit)
+    fun getRunByDescDateWithLimit(limit: Int): Flow<List<Run>> = runDao.getRunByDescDateWithLimit(limit)
+
 
     fun getTotalRunningDuration(fromDate: Date? = null, toDate: Date? = null): Flow<Long> =
         runDao.getTotalRunningDuration(fromDate, toDate)
@@ -46,5 +53,14 @@ class RunRepository @Inject constructor(
 
     fun getTotalAvgSpeed(fromDate: Date? = null, toDate: Date? = null): Flow<Float> =
         runDao.getTotalAvgSpeed(fromDate, toDate)
+
+    suspend fun submitRun(run: RunSubmissionRequest): RunningResponse? {
+        val token = userRepository.getUserToken()
+        return token?.let {
+            val tokenWithBearer = "Bearer $it"
+            userApiService.submitRun(tokenWithBearer, run)
+        }
+    }
+
 
 }

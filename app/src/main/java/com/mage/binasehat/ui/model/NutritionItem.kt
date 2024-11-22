@@ -4,6 +4,6 @@ import androidx.compose.ui.graphics.Color
 
 data class NutritionItem(
     val label: String,
-    val value: Int,
+    val value: Double,
     val color: Color
 )

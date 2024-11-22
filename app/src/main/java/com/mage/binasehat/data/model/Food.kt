@@ -7,7 +7,7 @@ data class Food(
     val category: String,
     val sugar: Float,
     val protein: Float,
-    val carb: Float,
+    val carb: Int,
     val fat: Float,
     val headline: String,
     val desc: String,

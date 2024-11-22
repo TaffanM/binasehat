@@ -62,6 +62,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.mage.binasehat.R
 import com.mage.binasehat.data.remote.response.ArticlesItem
 import com.mage.binasehat.data.remote.response.DetailUserResponse
+import com.mage.binasehat.data.remote.response.FoodHistoryResponse
+import com.mage.binasehat.data.remote.response.TotalNutrition
 import com.mage.binasehat.data.util.UiState
 import com.mage.binasehat.ui.model.NutritionItem
 import com.mage.binasehat.ui.screen.accountdetail.AccountDetailViewModel
@@ -69,6 +71,7 @@ import com.mage.binasehat.ui.screen.accountdetail.ProfileImage
 import com.mage.binasehat.ui.screen.components.AppBar
 import com.mage.binasehat.ui.screen.components.DateSlider
 import com.mage.binasehat.ui.screen.components.NewsArticleLayout
+import com.mage.binasehat.ui.screen.food.FoodViewModel
 import com.mage.binasehat.ui.theme.PlusJakartaSans
 import com.mage.binasehat.ui.theme.Typography
 import com.mage.binasehat.ui.util.TimeUtility
@@ -80,13 +83,16 @@ fun DashboardScreen(
     newsState: UiState<List<ArticlesItem>>,
     dashboardViewModel: DashboardViewModel = hiltViewModel(),
     viewModel: NewsViewModel = hiltViewModel(),
+    foodViewModel: FoodViewModel = hiltViewModel()
 ) {
     val userDetailResponse by dashboardViewModel.userDetailResponse.collectAsState()
+    val foodHistoryResponse by foodViewModel.foodHistory.collectAsState()
 
     val greeting = TimeUtility.getGreeting()
 
     LaunchedEffect(Unit) {
         dashboardViewModel.fetchUserDetails()
+        foodViewModel.getFoodHistory()
     }
 
     LazyColumn(
@@ -140,7 +146,7 @@ fun DashboardScreen(
                     )
                 }
 
-                NutritionBar(userDetailResponse)
+                NutritionBar(userDetailResponse, foodHistoryResponse, foodHistoryResponse?.totalNutrition)
                 NewsRow(newsState, viewModel)
             }
         }
@@ -149,13 +155,31 @@ fun DashboardScreen(
 
 @Composable
 fun NutritionBar(
-    userDetailResponse: DetailUserResponse?
+    userDetailResponse: DetailUserResponse?,
+    foodHistoryResponse: FoodHistoryResponse?,
+    totalNutrition: TotalNutrition?
 ) {
     val nutritionData = listOf(
-        NutritionItem(stringResource(R.string.karbohidrat), 250, colorResource(R.color.dark_red)),
-        NutritionItem(stringResource(R.string.protein), 56, colorResource(R.color.dark_green)),
-        NutritionItem(stringResource(R.string.lemak), 75, colorResource(R.color.dark_blue)),
-        NutritionItem(stringResource(R.string.gula), 50, colorResource(R.color.dark_yellow))
+        NutritionItem(
+            stringResource(R.string.karbohidrat),
+            (totalNutrition?.carbs ?: 0).toDouble(),
+            colorResource(R.color.dark_red)
+        ),
+        NutritionItem(
+            stringResource(R.string.protein),
+            totalNutrition?.protein ?: 0.0,
+            colorResource(R.color.dark_green)
+        ),
+        NutritionItem(
+            stringResource(R.string.lemak),
+            (totalNutrition?.fats ?: 0.0),
+            colorResource(R.color.dark_blue)
+        ),
+        NutritionItem(
+            stringResource(R.string.gula),
+            (totalNutrition?.sugar ?: 0.0),
+            colorResource(R.color.dark_yellow)
+        )
     )
 
     val totalValue = nutritionData.sumOf { it.value }
@@ -170,7 +194,7 @@ fun NutritionBar(
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
-                text = totalValue.toString(),
+                text = String.format("%.2f", totalValue),
                 fontSize = 32.sp,
                 fontFamily = PlusJakartaSans,
                 fontWeight = FontWeight.Bold,
@@ -195,9 +219,11 @@ fun NutritionBar(
             nutritionData.forEach { item ->
                 Box(
                     modifier = Modifier
-                        .weight(item.value.toFloat())
+                        .weight(if (item.value > 0) item.value.toFloat() else 1f) // Default weight for empty values
                         .fillMaxHeight()
-                        .background(item.color)
+                        .background(
+                            if (item.value > 0) item.color else colorResource(R.color.gray_300) // Grey for empty
+                        )
                 )
             }
         }
@@ -232,7 +258,7 @@ fun NutritionBar(
                         Text(text = item.label, fontWeight = FontWeight.Bold, style = Typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
                     }
                     Text(
-                        text = "${item.value} gr",
+                        text = String.format("%.2f", item.value) + "gr",
                         style = Typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -290,7 +316,7 @@ fun NutritionBar(
 
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "${userDetailResponse?.userDetail?.dailyCaloriesIn ?: 0.0} kcal",
+                        text = "${foodHistoryResponse?.totalNutrition?.calories ?: 0.0} Cal",
                         style = Typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = colorResource(R.color.green_primary)
@@ -330,7 +356,7 @@ fun NutritionBar(
 
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "${userDetailResponse?.userDetail?.dailyCaloriesOut ?: 0} kcal",
+                        text = "${userDetailResponse?.userDetail?.dailyCaloriesOut ?: 0} Cal",
                         style = Typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = colorResource(R.color.green_primary),

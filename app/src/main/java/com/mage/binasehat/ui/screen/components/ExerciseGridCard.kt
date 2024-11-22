@@ -47,19 +47,19 @@ fun ExerciseGridCard(exercise: Exercise, navigateToDetail: (Long) -> Unit, modif
         ),
         modifier = modifier
             .width(166.dp)
-            .height(197.dp).clickable {
+            .height(250.dp).clickable {
                 navigateToDetail(exercise.id?.toLong() ?: 0)
             }
     ) {
-//        AsyncImage(
-//            model = ImageRequest.Builder(LocalContext.current)
-//                .data(exercise.photoUrl)
-//                .crossfade(true)
-//                .build(),
-//            contentDescription = null,
-//            contentScale = ContentScale.Crop,
-//            modifier = Modifier.fillMaxWidth().height(104.dp),
-//        )
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(exercise.photo)
+                .crossfade(true)
+                .build(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxWidth().height(104.dp),
+        )
         Column(
 
             verticalArrangement = Arrangement.spacedBy(5.dp),

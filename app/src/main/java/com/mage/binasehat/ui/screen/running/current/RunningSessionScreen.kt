@@ -1,6 +1,7 @@
 package com.mage.binasehat.ui.screen.running.current
 
 import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -47,9 +49,19 @@ fun CurrentRunScreen(
     val runState by viewModel.currentRunStateWithCalories.collectAsStateWithLifecycle()
     val runningDurationInMillis by viewModel.runningDurationInMillis.collectAsStateWithLifecycle()
 
+    val uploadResult by viewModel.uploadResult.observeAsState()
+
     LaunchedEffect(key1 = Unit) {
         delay(ComposeUtility.slideDownInDuration + 200L)
         shouldShowRunningCard = true
+    }
+
+    uploadResult?.let { result ->
+        result.onSuccess {
+            Toast.makeText(context, "Run data uploaded successfully!", Toast.LENGTH_SHORT).show()
+        }.onFailure {
+            Toast.makeText(context, "Failed to upload run data: ${it.localizedMessage}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {

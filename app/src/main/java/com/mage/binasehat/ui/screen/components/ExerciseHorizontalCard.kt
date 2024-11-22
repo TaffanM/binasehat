@@ -69,16 +69,16 @@ fun ExerciseHorizontalCard(
                 0f, 0f, contrast, 0f, 0f,
                 0f, 0f, 0f, 1f, 0f
             )
-//            AsyncImage(
-//                model = ImageRequest.Builder(LocalContext.current)
-//                    .data(exercise.photoUrl)
-//                    .crossfade(true)
-//                    .build(),
-//                contentDescription = null,
-//                contentScale = ContentScale.Crop,
-//                modifier = Modifier.fillMaxSize(),
-//                colorFilter = ColorFilter.colorMatrix(ColorMatrix(colorMatrix)),
-//            )
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(exercise.photo)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+                colorFilter = ColorFilter.colorMatrix(ColorMatrix(colorMatrix)),
+            )
 
             // Text Informasi
             Column(
@@ -97,7 +97,7 @@ fun ExerciseHorizontalCard(
                     Text(
                         text = "${exercise.muscle?.name} | ${exercise.category?.name} ",
                         style = MaterialTheme.typography.bodySmall.copy(
-                            color = MaterialTheme.colorScheme.outline
+                            color = Color.White
                         )
                     )
 
@@ -121,7 +121,7 @@ fun ExerciseHorizontalCard(
                     Text(
                         text = exercise.name ?: "",
                         style = MaterialTheme.typography.bodyLarge.copy(
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = Color.White
                         )
                     )
                     Spacer(modifier = Modifier.height(9.dp))
@@ -168,7 +168,7 @@ fun ExerciseAdditionInformation(
         )
         Spacer(modifier = Modifier.width(2.dp))
         Text(text = text ,  style = MaterialTheme.typography.bodySmall.copy(
-            color = MaterialTheme.colorScheme.onSurface,
+            color = iconTint,
             fontWeight = FontWeight.Medium
         ))
     }

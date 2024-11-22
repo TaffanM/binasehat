@@ -47,14 +47,14 @@ data class TotalNutrition(
 	val carbs: Int,
 
 	@field:SerializedName("fats")
-	val fats: Any,
+	val fats: Double,
 
 	@field:SerializedName("protein")
-	val protein: Any,
+	val protein: Double,
 
 	@field:SerializedName("calories")
 	val calories: Int,
 
 	@field:SerializedName("sugar")
-	val sugar: Any
+	val sugar: Double
 )

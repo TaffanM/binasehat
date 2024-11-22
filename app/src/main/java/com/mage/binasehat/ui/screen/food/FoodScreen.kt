@@ -1,5 +1,6 @@
 package com.mage.binasehat.ui.screen.food
 
+import android.util.Log
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.compose.foundation.Image
@@ -23,6 +24,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -39,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,7 +58,12 @@ import com.mage.binasehat.ui.screen.dashboard.DashboardViewModel
 import com.mage.binasehat.ui.screen.dashboard.SettingsButtonLayout
 import com.mage.binasehat.ui.theme.PlusJakartaSans
 import com.mage.binasehat.ui.theme.Typography
+import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun FoodScreen(
@@ -76,10 +84,11 @@ fun FoodScreen(
     val errorMessage by foodViewModel.errorMessage.collectAsState()
 
     val userDetailResponse by dashboardViewModel.userDetailResponse.collectAsState()
+    val selectedDate = remember { mutableStateOf(LocalDate.now().toString()) }
 
     LaunchedEffect(Unit) {
-        val currentDate = LocalDate.now().toString()
-        foodViewModel.getFoodHistory(date = currentDate)
+        foodViewModel.getFoodHistory(date = selectedDate.value)
+        dashboardViewModel.filterDailyCaloriesByDate(date = selectedDate.value)
     }
 
     Box(
@@ -106,7 +115,10 @@ fun FoodScreen(
                     DateSlider(
                         modifier = Modifier.padding(top = 32.dp),
                         onDateSelected = {
-                            foodViewModel.getFoodHistory(date = it.toString())
+                            selectedDate.value = it.toString()
+                            Log.d("FoodScreen", "Selected date: $it")
+                            foodViewModel.getFoodHistory(date = selectedDate.value)
+                            dashboardViewModel.filterDailyCaloriesByDate(date = selectedDate.value)
                         }
                     )
 
@@ -119,7 +131,7 @@ fun FoodScreen(
                     )
 
                     Text(
-                        text = userDetailResponse?.userDetail?.dailyCaloriesIn.toString(),
+                        text = "${(foodHistoryResponse?.totalNutrition?.calories ?: 0)} Cal",
                         fontSize = 32.sp,
                         fontFamily = PlusJakartaSans,
                         fontWeight = FontWeight.Bold,
@@ -128,26 +140,23 @@ fun FoodScreen(
                 }
             }
 
-            // Loading and Error states handled here
-            if (loading) {
-                item {
-                    CircularProgressIndicator(modifier = Modifier)
-                }
-            } else if (errorMessage != null) {
-                item {
-                    Text(
-                        text = errorMessage ?: "",
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            }
-
             // LazyColumn content (Food History List)
-            item {
-                foodHistoryResponse?.foodList?.let { foodList ->
-                    foodList.forEach { foodItem ->
+            if (!loading && errorMessage == null) {
+                val foodList = foodHistoryResponse?.foodList
+                if (foodList.isNullOrEmpty()) {
+                    item {
+                        Text(
+                            text = stringResource(R.string.food_history_empty),
+                            style = Typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                } else {
+                    items(foodList) { foodItem ->
                         FoodHistoryItem(foodItem) // Display each food history item
                     }
                 }
@@ -173,6 +182,23 @@ fun FoodHistoryItem(foodItem: FoodListItem) {
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
+        // Define the formatter for the input string date format
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+
+        // Parse the consumedAt string into a LocalDateTime
+        val consumedAt = try {
+            LocalDateTime.parse(foodItem.consumedAt, inputFormatter)
+        } catch (e: Exception) {
+            // Handle cases where parsing fails (e.g., invalid date format)
+            LocalDateTime.now() // Fallback to the current time if parsing fails
+        }
+
+        // Define the formatter for the desired display format
+        val displayFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.getDefault())
+
+        // Format the parsed date
+        val formattedDate = consumedAt.format(displayFormatter)
+
         Text(
             text = foodItem.name,
             style = MaterialTheme.typography.titleMedium,
@@ -187,12 +213,12 @@ fun FoodHistoryItem(foodItem: FoodListItem) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Consumed At: ${foodItem.consumedAt}",
+            text = stringResource(R.string.dimakan_pada) + " : " + formattedDate,
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onSurface
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Divider()
+        HorizontalDivider()
     }
 }
 

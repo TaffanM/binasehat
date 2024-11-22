@@ -44,17 +44,34 @@ class RunViewModel @Inject constructor(
         calendar.setDateToWeekLastDay().time
     )
 
+    private val totalDistance = repository.getTotalDistance()
+    private val totalDuration = repository.getTotalRunningDuration()
+    private val totalCalories = repository.getTotalCaloriesBurned()
+
+    // Combine total stats separately
+    private val totalStats = combine(
+        totalDistance,
+        totalDuration,
+        totalCalories
+    ) { distance, duration, calories ->
+        Triple(distance, duration, calories)
+    }
+
     private val _homeScreenState = MutableStateFlow(RunningMainScreenState())
     val runningMainScreenState = combine(
         repository.getRunByDescDateWithLimit(3),
         getCurrentRunStateWithCaloriesUseCase(),
         distanceCoveredInThisWeekInMeter,
+        totalStats,
         _homeScreenState,
-    ) { runList, runState, distanceInMeter, state ->
+    ) { runList, runState, distanceInMeter, (totalDistanceInMeter, totalDurationInMillis, totalCalories), state ->
         state.copy(
             runList = runList,
             currentRunStateWithCalories = runState,
-            distanceCoveredInKmInThisWeek = distanceInMeter / 1000f
+            distanceCoveredInKmInThisWeek = distanceInMeter / 1000f,
+            totalDistanceInKm = totalDistanceInMeter / 1000f,
+            totalDurationInHr = totalDurationInMillis / (1000f * 60f * 60f),
+            totalCaloriesBurnt = totalCalories
         )
     }.stateIn(
         viewModelScope,

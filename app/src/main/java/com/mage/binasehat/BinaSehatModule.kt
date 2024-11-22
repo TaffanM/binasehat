@@ -78,9 +78,11 @@ abstract class BinaSehatModule {
         @Provides
         @Singleton
         fun provideRunRepository(
-            runDao: RunDao
+            runDao: RunDao,
+            userApiService: UserApiService,
+            userRepository: UserRepository
         ): RunRepository {
-            return RunRepository(runDao)
+            return RunRepository(runDao, userApiService, userRepository)
         }
 
         @Provides

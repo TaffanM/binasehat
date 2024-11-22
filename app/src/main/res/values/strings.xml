@@ -134,5 +134,7 @@
     <string name="jumlah_kalori">(2000 kalori per hari)</string>
     <string name="kalori_masuk">Kalori Masuk</string>
     <string name="kalori_keluar">Kalori Keluar</string>
+    <string name="food_history_empty">List makanan kosong. Tambah sekarang!</string>
+    <string name="dimakan_pada">Dimakan Pada</string>
 
 </resources>

@@ -423,7 +423,7 @@ private fun TotalProgressStats(
             modifier = Modifier,
             painter = painterResource(id = R.drawable.running_boy),
             unit = "km",
-            value = state.totalDistanceInKm.toString()
+            value = String.format("%.1f", state.totalDistanceInKm)
         )
         VerticalDivider(
             modifier = Modifier
@@ -437,7 +437,7 @@ private fun TotalProgressStats(
             modifier = Modifier,
             painter = painterResource(id = R.drawable.stopwatch),
             unit = stringResource(R.string.jam),
-            value = state.totalDurationInHr.toString()
+            value = String.format("%.1f", state.totalDurationInHr)
         )
         VerticalDivider(
             modifier = Modifier
@@ -450,8 +450,8 @@ private fun TotalProgressStats(
         RunningStatsItem(
             modifier = Modifier,
             painter = painterResource(id = R.drawable.fire),
-            unit = "kcal",
-            value = state.totalCaloriesBurnt.toString()
+            unit = "Cal",
+            value = String.format("%.1f", state.totalCaloriesBurnt.toDouble())
         )
     }
 }

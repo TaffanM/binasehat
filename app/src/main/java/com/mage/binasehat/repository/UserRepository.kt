@@ -13,6 +13,8 @@ import com.mage.binasehat.data.remote.response.RegisterResponse
 import com.mage.binasehat.data.remote.response.UploadResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -24,6 +26,8 @@ class UserRepository @Inject constructor(
     private val dataStore: DataStore<androidx.datastore.preferences.core.Preferences>,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
+    private val _userDetailFlow = MutableStateFlow<DetailUserResponse?>(null)
+    val userDetailFlow: StateFlow<DetailUserResponse?> = _userDetailFlow
 
     suspend fun register(username: String, email: String, password: String): RegisterResponse {
         return withContext(dispatcher) {
