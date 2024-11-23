@@ -131,7 +131,7 @@
     <string name="list_kebugaran">List Kebugaran</string>
     <string name="mulai_latihan_interaktif">Mulai Latihan Interaktif</string>
     <string name="target_nutrisi">Target Nutrisi</string>
-    <string name="jumlah_kalori">(2000 kalori per hari)</string>
+    <string name="jumlah_kalori">kalori per hari</string>
     <string name="kalori_masuk">Kalori Masuk</string>
     <string name="kalori_keluar">Kalori Keluar</string>
     <string name="food_history_empty">List makanan kosong. Tambah sekarang!</string>

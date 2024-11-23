@@ -82,12 +82,12 @@ fun BinaSehatApp(
         composable("launch") {
             LaunchedEffect(Unit) {
                 val token = userRepository.getUserToken()
-                if (token != null) {
+                if (token.isNullOrBlank()) {
+                    navController.navigate("login")
+                } else {
                     navController.navigate("main") {
                         popUpTo("onboarding") { inclusive = true }
                     }
-                } else {
-                    navController.navigate("login")
                 }
             }
         }

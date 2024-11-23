@@ -131,9 +131,11 @@
     <string name="list_kebugaran">Fitness List</string>
     <string name="mulai_latihan_interaktif">Start Interactive Workout</string>
     <string name="target_nutrisi">Nutrition Target</string>
-    <string name="jumlah_kalori">(2000 calories per day)</string>
+    <string name="jumlah_kalori">calories per day</string>
     <string name="kalori_masuk">Calories In</string>
     <string name="kalori_keluar">Calories Out</string>
+    <string name="food_history_empty">Food list is empty. Add now!</string>
+    <string name="dimakan_pada">Eaten On</string>
 
 
 

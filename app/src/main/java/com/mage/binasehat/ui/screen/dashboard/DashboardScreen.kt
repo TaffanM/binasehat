@@ -87,6 +87,7 @@ fun DashboardScreen(
 ) {
     val userDetailResponse by dashboardViewModel.userDetailResponse.collectAsState()
     val foodHistoryResponse by foodViewModel.foodHistory.collectAsState()
+    val formResponse by dashboardViewModel.formResponse.collectAsState()
 
     val greeting = TimeUtility.getGreeting()
 
@@ -140,7 +141,7 @@ fun DashboardScreen(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = stringResource(R.string.jumlah_kalori),
+                        text = (userDetailResponse?.userDetail?.dailyCalories?.toInt()).toString() + " " + stringResource(R.string.jumlah_kalori),
                         style = Typography.bodySmall,
                         modifier = Modifier.padding(start = 4.dp),
                         color = MaterialTheme.colorScheme.primary
@@ -317,7 +318,7 @@ fun NutritionBar(
 
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "${foodHistoryResponse?.totalNutrition?.calories ?: 0.0} Cal",
+                        text = "${userDetailResponse?.userDetail?.dailyCaloriesIn ?: 0} Cal",
                         style = Typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = colorResource(R.color.green_primary)

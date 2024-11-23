@@ -3,6 +3,7 @@ package com.mage.binasehat.ui.screen.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mage.binasehat.data.remote.response.DetailUserResponse
+import com.mage.binasehat.data.remote.response.FormResponse
 import com.mage.binasehat.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,9 @@ class DashboardViewModel @Inject constructor(
     // StateFlow to manage the loading state
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
+
+    private val _formResponse = MutableStateFlow<FormResponse?>(null)
+    val formResponse: StateFlow<FormResponse?> = _formResponse
 
     private var originalUserDetail: DetailUserResponse? = null
 
@@ -44,6 +48,25 @@ class DashboardViewModel @Inject constructor(
             }
         }
     }
+
+//    // Fetch the FormResponse data
+//    fun fetchFormResponse() {
+//        viewModelScope.launch {
+//            val authToken = userRepository.getUserToken() // Get token from DataStore
+//            if (authToken != null) {
+//                _isLoading.value = true
+//                try {
+//                    val response = userRepository.getFormResponse(authToken) // Fetch FormResponse from repository
+//                    _formResponse.value = response
+//                } catch (e: Exception) {
+//                    // Handle error (e.g., network failure)
+//                    _formResponse.value = null
+//                } finally {
+//                    _isLoading.value = false
+//                }
+//            }
+//        }
+//    }
 
     fun filterDailyCaloriesByDate(date: String) {
         val filteredResponse = originalUserDetail?.let {

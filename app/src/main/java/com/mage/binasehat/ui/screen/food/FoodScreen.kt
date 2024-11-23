@@ -63,6 +63,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -187,13 +188,14 @@ fun FoodHistoryItem(foodItem: FoodListItem) {
         modifier = Modifier.padding(16.dp)
     ) {
         // Define the formatter for the input string date format
-        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
 
         // Parse the consumedAt string into a LocalDateTime
         val consumedAt = try {
-            LocalDateTime.parse(foodItem.consumedAt, inputFormatter)
+            ZonedDateTime.parse(foodItem.consumedAt, inputFormatter).toLocalDateTime()
         } catch (e: Exception) {
             // Handle cases where parsing fails (e.g., invalid date format)
+            Log.d("Food Screen", "Parse failed : $e")
             LocalDateTime.now() // Fallback to the current time if parsing fails
         }
 
